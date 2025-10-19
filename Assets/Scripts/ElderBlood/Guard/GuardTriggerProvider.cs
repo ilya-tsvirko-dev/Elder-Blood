@@ -1,0 +1,13 @@
+using Scellecs.Morpeh.Providers;
+using Unity.IL2CPP.CompilerServices;
+
+namespace ElderBlood.Guard
+{
+    [Il2CppSetOption(Option.NullChecks, false)]
+    [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
+    [Il2CppSetOption(Option.DivideByZeroChecks, false)]
+    public class GuardTriggerProvider  : MonoProvider<GuardTriggerComponent> 
+    {
+
+    }
+}
