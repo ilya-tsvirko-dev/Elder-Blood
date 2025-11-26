@@ -1,4 +1,6 @@
 using System;
+using DefaultNamespace.Configs;
+using DefaultNamespace.Configs.Guard;
 using ElderBlood.Character.Animation;
 using ElderBlood.Character.Input;
 using ElderBlood.Guard;
@@ -25,6 +27,8 @@ namespace DefaultNamespace
             systemsGroup.AddSystem(new GuardTriggerSystem());
             systemsGroup.AddSystem(new GuardBehaviorSystem());
             systemsGroup.AddSystem(new GuardAnimationSystem());
+            systemsGroup.AddSystem(new GuardSetupSystem());
+            systemsGroup.AddSystem(new ConfigSetupSystem());
             
             this._world.AddSystemsGroup(order: 0, systemsGroup);
         }

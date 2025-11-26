@@ -1768,6 +1768,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1187424935}
   - component: {fileID: 1187424934}
+  - component: {fileID: 1187424936}
   m_Layer: 0
   m_Name: test
   m_TagString: Untagged
@@ -1796,12 +1797,26 @@ Transform:
   m_GameObject: {fileID: 1187424933}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.9131045, y: -0.35205922, z: -0.00046545092}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1187424936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1187424933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a097cf7e825346e4b089b1e446ca4cc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.Configs.ConfigSetupProvider
+  serializedData:
+    config: {fileID: 11400000, guid: 689ac5a3e2fd5ad4cac7c28b2157dd7b, type: 2}
 --- !u!1 &1302546312
 GameObject:
   m_ObjectHideFlags: 0
@@ -3481,6 +3496,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5391795559169507127, guid: 4ca6abd8c053dd54e8003eb70e57b24a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 480478954983579093}
+    - targetCorrespondingSourceObject: {fileID: 5391795559169507127, guid: 4ca6abd8c053dd54e8003eb70e57b24a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 480478954983579098}
   m_SourcePrefab: {fileID: 100100000, guid: 4ca6abd8c053dd54e8003eb70e57b24a, type: 3}
 --- !u!120 &480478954983579089 stripped
 LineRenderer:
@@ -3563,6 +3581,7 @@ MonoBehaviour:
     type: 0
     moveType: 0
     moveVector: {x: 0, y: 0}
+    animationTime: 0
 --- !u!114 &480478954983579097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3582,6 +3601,21 @@ MonoBehaviour:
     speed: 15
     runSpeed: 40
     isAction: 0
+--- !u!114 &480478954983579098
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 480478954983579090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ccceb2ac0c54d5a912676deee74d513, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HealthProvider
+  serializedData:
+    healthPoint: 100
+    maxHealthPoint: 100
 --- !u!1001 &5538704694738347537
 PrefabInstance:
   m_ObjectHideFlags: 0
