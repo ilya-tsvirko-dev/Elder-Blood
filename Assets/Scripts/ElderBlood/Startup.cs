@@ -1,6 +1,7 @@
 using System;
 using DefaultNamespace.Configs;
 using DefaultNamespace.Configs.Guard;
+using ElderBlood;
 using ElderBlood.Character.Animation;
 using ElderBlood.Character.Input;
 using ElderBlood.Guard;
@@ -9,7 +10,7 @@ using ElderBlood.Guard.GuardBehavior;
 using Scellecs.Morpeh;
 using UnityEngine;
 
-namespace DefaultNamespace
+namespace ElderBlood
 {
     public class Startup : MonoBehaviour
     {
@@ -29,6 +30,7 @@ namespace DefaultNamespace
             systemsGroup.AddSystem(new GuardAnimationSystem());
             systemsGroup.AddSystem(new GuardSetupSystem());
             systemsGroup.AddSystem(new ConfigSetupSystem());
+            //systemsGroup.AddSystem(new MoveNavMeshSystem());
             
             this._world.AddSystemsGroup(order: 0, systemsGroup);
         }

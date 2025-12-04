@@ -2,15 +2,18 @@ using Scellecs.Morpeh.Providers;
 using Unity.IL2CPP.CompilerServices;
 using UnityEngine;
 
-[Il2CppSetOption(Option.NullChecks, false)]
-[Il2CppSetOption(Option.ArrayBoundsChecks, false)]
-[Il2CppSetOption(Option.DivideByZeroChecks, false)]
-[RequireComponent(typeof(Rigidbody2D))]
-public sealed class MoveProvider : MonoProvider<MoveComponent> 
+namespace ElderBlood
 {
-    protected override void Initialize()
+    [Il2CppSetOption(Option.NullChecks, false)]
+    [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
+    [Il2CppSetOption(Option.DivideByZeroChecks, false)]
+    [RequireComponent(typeof(Rigidbody2D))]
+    public sealed class MoveProvider : MonoProvider<MoveComponent> 
     {
-        base.Initialize();
-        GetData().rigidbody = GetComponent<Rigidbody2D>();
+        protected override void Initialize()
+        {
+            base.Initialize();
+            GetData().rigidbody = GetComponent<Rigidbody2D>();
+        }
     }
 }

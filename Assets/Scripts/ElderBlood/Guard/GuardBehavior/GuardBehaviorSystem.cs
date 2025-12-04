@@ -3,6 +3,7 @@ using ElderBlood.Guard.Animation;
 using Scellecs.Morpeh;
 using Unity.IL2CPP.CompilerServices;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace ElderBlood.Guard.GuardBehavior
 {
@@ -16,15 +17,17 @@ namespace ElderBlood.Guard.GuardBehavior
         private Filter _filter;
         private Stash<GuardBehaviorComponent> _stash;
         private Stash<MoveComponent> _moveStash;
+        private Stash<MoveNavMeshComponent> _navigateStash;
         private Stash<GuardAnimationComponent> _animationStash;
 
         public void OnAwake()
         {
             _filter = World.Filter.With<GuardBehaviorComponent>().With<MoveComponent>().With<GuardAnimationComponent>()
-                .Build();
+                .With<MoveNavMeshComponent>().Build();
             _stash = World.GetStash<GuardBehaviorComponent>();
             _moveStash = World.GetStash<MoveComponent>();
             _animationStash = World.GetStash<GuardAnimationComponent>();
+            _navigateStash = World.GetStash<MoveNavMeshComponent>();
         }
 
         public void OnUpdate(float deltaTime)
@@ -34,6 +37,7 @@ namespace ElderBlood.Guard.GuardBehavior
                 ref var behaviorComponent = ref _stash.Get(entity);
                 ref var moveComponent = ref _moveStash.Get(entity);
                 ref var animationComponent = ref _animationStash.Get(entity);
+                ref var navigationComponent = ref _navigateStash.Get(entity);
                 
                 animationComponent.type = GuardAnimationType.None;
 
@@ -44,11 +48,20 @@ namespace ElderBlood.Guard.GuardBehavior
                     continue;
                 }
 
-                var vector = behaviorComponent.targetTransform.position - behaviorComponent.transform.position;
-                var magnitude = vector.magnitude;
-                var normalizeVector = vector.normalized;
+                var canDoPath = NavMesh.CalculatePath(behaviorComponent.transform.position, behaviorComponent.targetTransform.position,
+                    NavMesh.AllAreas,
+                    navigationComponent.navMeshPath);
                 
-                Debug.Log(magnitude);
+                if (!canDoPath)
+                    continue;
+                
+                for (int i = 0; i < navigationComponent.navMeshPath.corners.Length - 1; i++)
+                    Debug.DrawLine(navigationComponent.navMeshPath.corners[i], navigationComponent.navMeshPath.corners[i + 1], Color.red);
+                
+                var vector = navigationComponent.navMeshPath.corners[1] - navigationComponent.navMeshPath.corners[0];
+                var magnitude = (behaviorComponent.targetTransform.position - behaviorComponent.transform.position)
+                    .magnitude;
+                var normalizeVector = vector.normalized;
 
                 if (magnitude > behaviorComponent.minMagnitude)
                 {
