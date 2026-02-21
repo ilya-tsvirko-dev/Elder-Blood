@@ -1,6 +1,7 @@
 using Scellecs.Morpeh;
 using Unity.IL2CPP.CompilerServices;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace ElderBlood.Character.Animation
 {
@@ -14,5 +15,6 @@ namespace ElderBlood.Character.Animation
         public CharacterAnimationType type;
         public MoveAnimationType moveType;
         public Vector2 moveVector;
+        public ShadowCaster2D shadowCaster2D;
     }
 }

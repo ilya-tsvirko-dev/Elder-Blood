@@ -11,6 +11,7 @@ namespace ElderBlood.Guard.GuardBehavior
     public struct GuardBehaviorComponent : IComponent 
     {
         public Transform targetTransform;
+        public Vector3 patrolPoint;
         public Transform transform;
         public float minMagnitude;
     }

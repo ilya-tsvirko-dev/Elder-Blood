@@ -41,14 +41,17 @@ namespace ElderBlood.Guard.GuardBehavior
                 
                 animationComponent.type = GuardAnimationType.None;
 
-                if (behaviorComponent.targetTransform == null)
+                if (behaviorComponent.targetTransform == null && behaviorComponent.patrolPoint == Vector3.zero)
                 {
                     moveComponent.moveVector = Vector3.zero;
                     animationComponent.moveType = MoveAnimationType.Stop;
                     continue;
                 }
+                
+                var pointToMove = behaviorComponent.targetTransform != null ?
+                    behaviorComponent.targetTransform.position :  behaviorComponent.patrolPoint;
 
-                var canDoPath = NavMesh.CalculatePath(behaviorComponent.transform.position, behaviorComponent.targetTransform.position,
+                var canDoPath = NavMesh.CalculatePath(behaviorComponent.transform.position, pointToMove,
                     NavMesh.AllAreas,
                     navigationComponent.navMeshPath);
                 
@@ -59,21 +62,21 @@ namespace ElderBlood.Guard.GuardBehavior
                     Debug.DrawLine(navigationComponent.navMeshPath.corners[i], navigationComponent.navMeshPath.corners[i + 1], Color.red);
                 
                 var vector = navigationComponent.navMeshPath.corners[1] - navigationComponent.navMeshPath.corners[0];
-                var magnitude = (behaviorComponent.targetTransform.position - behaviorComponent.transform.position)
+                var magnitude = (pointToMove - behaviorComponent.transform.position)
                     .magnitude;
                 var normalizeVector = vector.normalized;
 
-                if (magnitude > behaviorComponent.minMagnitude)
+                if (magnitude < behaviorComponent.minMagnitude && behaviorComponent.targetTransform != null)
                 {
-                    moveComponent.moveVector = normalizeVector;
-                    animationComponent.moveVector = normalizeVector;
-                    animationComponent.moveType = MoveAnimationType.Move;
+                    moveComponent.moveVector = Vector3.zero;
+                    animationComponent.moveType = MoveAnimationType.Stop;
+                    animationComponent.type = GuardAnimationType.Attack;
                     continue;
                 }
-
-                moveComponent.moveVector = Vector3.zero;
-                animationComponent.moveType = MoveAnimationType.Stop;
-                animationComponent.type = GuardAnimationType.Attack;
+                
+                moveComponent.moveVector = normalizeVector;
+                animationComponent.moveVector = normalizeVector;
+                animationComponent.moveType = MoveAnimationType.Move;
             }
         }
 

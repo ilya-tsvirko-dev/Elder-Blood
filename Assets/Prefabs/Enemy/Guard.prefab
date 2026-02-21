@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 415462269698054787}
   - component: {fileID: 1678012134560285228}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Debug (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,14 +185,14 @@ GameObject:
   - component: {fileID: 6713387294474207264}
   - component: {fileID: 9111787585779885567}
   - component: {fileID: 7487918185299583415}
-  - component: {fileID: 877984290673103294}
   - component: {fileID: 1806448722831136705}
   - component: {fileID: 163828505049110447}
   - component: {fileID: 5824220088479837259}
   - component: {fileID: 5311350741331277741}
   - component: {fileID: 637760186438621286}
   - component: {fileID: 5833565324845665005}
-  m_Layer: 0
+  - component: {fileID: 8497794638867034144}
+  m_Layer: 7
   m_Name: Guard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -368,30 +368,6 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 0.6700368, y: 0.83426684}
   m_EdgeRadius: 0
---- !u!114 &877984290673103294
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5391795559169507127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c2abc0951f044fead83249b7de1233a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 5
-  _shiftSpeed: 10
-  _isCheckAnimation: 0
-  _isRun: 0
-  _isIdle: 0
-  _guardAnimation: {fileID: 0}
-  _lineRenderer: {fileID: 1678012134560285228}
-  _isDebug: 1
-  _segments: 32
-  _zPosition: 0
-  _radius: 2
-  _attackRadius: 1
 --- !u!114 &1806448722831136705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,6 +431,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     targetTransform: {fileID: 0}
+    patrolPoint: {x: 0, y: 0, z: 0}
     transform: {fileID: 2535124292375936500}
     minMagnitude: 0.75
 --- !u!114 &637760186438621286
@@ -471,7 +448,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     target: {fileID: 2535124292375936500}
-    radius: 2
+    radius: 4
     lineRenderer: {fileID: 1678012134560285228}
 --- !u!114 &5833565324845665005
 MonoBehaviour:
@@ -488,3 +465,15 @@ MonoBehaviour:
   serializedData:
     healthPoint: 100
     maxHealthPoint: 100
+--- !u!114 &8497794638867034144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5391795559169507127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cac7701557944178b6b4c044db09e27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.MoveNavMeshProvider

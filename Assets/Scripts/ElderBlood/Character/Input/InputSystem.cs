@@ -82,7 +82,7 @@ namespace ElderBlood.Character.Input
                 if (moveComponent.moveVector == Vector2.zero && !moveComponent.isRun)
                 {
                     animationComponent.moveType = MoveAnimationType.Stop;
-                    animationComponent.moveVector = moveComponent.moveVector;
+                    //animationComponent.moveVector = moveComponent.moveVector;
                     return;
                 }
 
