@@ -240,6 +240,8 @@ MonoBehaviour:
     - {x: 16.47, y: -17.96, z: 0}
     currentPoint: {x: 0, y: 0, z: 0}
     currentIndex: 0
+    waitDuration: 2
+    waitTimer: 0
   points: []
 --- !u!1 &289859670
 GameObject:
@@ -459,6 +461,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &309739426
 TilemapRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -504,6 +507,7 @@ TilemapRenderer:
   m_SortingLayerID: -1854512005
   m_SortingLayer: 2
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -511,7 +515,6 @@ TilemapRenderer:
   m_SortOrder: 0
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
-  m_MaskInteraction: 0
 --- !u!1839735485 &309739427
 Tilemap:
   m_ObjectHideFlags: 0
@@ -7120,7 +7123,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &830688787
 LineRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -7166,6 +7169,7 @@ LineRenderer:
   m_SortingLayerID: -1782753673
   m_SortingLayer: 5
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Positions:
   - {x: 1.3, y: 0, z: 10}
   - {x: 1.2750208, y: 0.2536174, z: 10}
@@ -7254,7 +7258,6 @@ LineRenderer:
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
-  m_MaskInteraction: 0
   m_UseWorldSpace: 0
   m_Loop: 1
   m_ApplyActiveColorSpace: 1
@@ -7495,6 +7498,8 @@ MonoBehaviour:
     - {x: 29.37, y: -14.8, z: 0}
     currentPoint: {x: 0, y: 0, z: 0}
     currentIndex: 0
+    waitDuration: 3
+    waitTimer: 0
   points: []
 --- !u!1 &1302546312
 GameObject:
@@ -7692,6 +7697,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -7913,6 +7919,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &1648497855
 TilemapRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -7958,6 +7965,7 @@ TilemapRenderer:
   m_SortingLayerID: -1991196647
   m_SortingLayer: 3
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -7965,7 +7973,6 @@ TilemapRenderer:
   m_SortOrder: 0
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
-  m_MaskInteraction: 0
 --- !u!1839735485 &1648497856
 Tilemap:
   m_ObjectHideFlags: 0
@@ -10711,6 +10718,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &2127271692
 TilemapRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -10756,6 +10764,7 @@ TilemapRenderer:
   m_SortingLayerID: -1429973869
   m_SortingLayer: 1
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -10763,7 +10772,6 @@ TilemapRenderer:
   m_SortOrder: 0
   m_Mode: 0
   m_DetectChunkCullingBounds: 0
-  m_MaskInteraction: 0
 --- !u!1839735485 &2127271693
 Tilemap:
   m_ObjectHideFlags: 0
@@ -17813,6 +17821,8 @@ MonoBehaviour:
     - {x: -7.02, y: -17.56, z: 0}
     currentPoint: {x: 0, y: 0, z: 0}
     currentIndex: 0
+    waitDuration: 5
+    waitTimer: 0
   points: []
 --- !u!1001 &5538704694738347537
 PrefabInstance:

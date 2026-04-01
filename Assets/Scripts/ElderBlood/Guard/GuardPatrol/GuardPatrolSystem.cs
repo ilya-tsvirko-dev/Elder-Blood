@@ -43,7 +43,7 @@ namespace ElderBlood.Guard.GuardPatrol
                 if (patrolComponent.waitTimer > 0f)
                 {
                     patrolComponent.waitTimer -= deltaTime;
-                    behaviorComponent.patrolPoint = behaviorComponent.transform.position;
+                    behaviorComponent.patrolPoint = Vector3.zero;
                     continue;
                 }
 
