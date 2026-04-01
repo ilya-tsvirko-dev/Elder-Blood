@@ -10,10 +10,12 @@ namespace ElderBlood.Guard.GuardPatrol
     [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
     [Il2CppSetOption(Option.DivideByZeroChecks, false)]
     
-    public struct GuardPatrolComponent : IComponent 
+    public struct GuardPatrolComponent : IComponent
     {
         public List<Vector3> points;
         public Vector3 currentPoint;
         public int currentIndex;
+        public float waitDuration;
+        public float waitTimer;
     }
 }

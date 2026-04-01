@@ -39,11 +39,19 @@ namespace ElderBlood.Guard.GuardPatrol
                     patrolComponent.currentIndex = 0;
                     patrolComponent.currentPoint = patrolComponent.points[patrolComponent.currentIndex];
                 }
-                
+
+                if (patrolComponent.waitTimer > 0f)
+                {
+                    patrolComponent.waitTimer -= deltaTime;
+                    behaviorComponent.patrolPoint = behaviorComponent.transform.position;
+                    continue;
+                }
+
                 Vector2 currentPosition = behaviorComponent.transform.position;
 
                 if (Vector2.Distance(currentPosition, patrolComponent.currentPoint) < 0.1f)
                 {
+                    patrolComponent.waitTimer = patrolComponent.waitDuration;
                     patrolComponent.currentIndex = GetNextIndex(patrolComponent.points, patrolComponent.currentIndex);
                     patrolComponent.currentPoint = patrolComponent.points[patrolComponent.currentIndex];
                 }
