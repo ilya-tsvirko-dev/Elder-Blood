@@ -1,7 +1,5 @@
-using System;
 using DefaultNamespace.Configs;
 using DefaultNamespace.Configs.Guard;
-using ElderBlood;
 using ElderBlood.Character.Animation;
 using ElderBlood.Character.Input;
 using ElderBlood.Guard;
@@ -13,15 +11,15 @@ using UnityEngine;
 
 namespace ElderBlood
 {
-    public class Startup : MonoBehaviour
+    public class WorldCreator : MonoBehaviour
     {
         private World _world;
-        
-        private void Start()
-        {
-            this._world = World.Default;
 
-            var systemsGroup = this._world.CreateSystemsGroup();
+        public void CreateWorld()
+        {
+            _world = World.Default;
+
+            var systemsGroup = _world.CreateSystemsGroup();
             systemsGroup.AddSystem(new HealthShaderSystem());
             systemsGroup.AddSystem(new InputSystem());
             systemsGroup.AddSystem(new MoveSystem());
@@ -31,10 +29,9 @@ namespace ElderBlood
             systemsGroup.AddSystem(new GuardAnimationSystem());
             systemsGroup.AddSystem(new GuardSetupSystem());
             systemsGroup.AddSystem(new ConfigSetupSystem());
-            //systemsGroup.AddSystem(new MoveNavMeshSystem());
             systemsGroup.AddSystem(new GuardPatrolSystem());
-            
-            this._world.AddSystemsGroup(order: 0, systemsGroup);
+
+            _world.AddSystemsGroup(order: 0, systemsGroup);
         }
     }
 }

@@ -1,4 +1,5 @@
 using Scellecs.Morpeh;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using Unity.IL2CPP.CompilerServices;
 
@@ -8,13 +9,15 @@ namespace ElderBlood
     [Il2CppSetOption(Option.NullChecks, false)]
     [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
     [Il2CppSetOption(Option.DivideByZeroChecks, false)]
-    public struct MoveComponent : IComponent 
+    public struct MoveComponent : IComponent
     {
         public Rigidbody2D rigidbody;
-        public Vector2 moveVector;
-        public bool isRun;
         public float speed;
         public float runSpeed;
-        public bool isAction;
+
+        [Title("Runtime State")]
+        [ReadOnly] public Vector2 moveVector;
+        [ReadOnly] public bool isRun;
+        [ReadOnly] public bool isAction;
     }
 }

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -v \"InputSystem\\\\|InputAction\\\\|InputControl\\\\|InputDevice\\\\|InputBinding\\\\|InputReader\\\\|InputProvider\\\\|InputHandler\\\\|InputEvent\\\\|InputState\\\\|//.*Input\\\\.Get\")",
+      "Bash(grep:*)"
+    ]
+  }
+}

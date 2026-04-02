@@ -13,8 +13,7 @@ namespace DefaultNamespace.Configs
         private Event<ConfigSetupEvent> _setupEvents;
         public World World { get; set; }
 
-        public MainConfig _mainConfig;
-        
+        private MainConfig _mainConfig;
 
         public void OnUpdate(float deltaTime) { }
 

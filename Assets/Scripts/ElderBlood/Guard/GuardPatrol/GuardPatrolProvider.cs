@@ -24,5 +24,26 @@ namespace ElderBlood.Guard.GuardPatrol
 
             GetData().points = setPoints;
         }
+
+#if UNITY_EDITOR
+        private void OnDrawGizmosSelected()
+        {
+            var drawPoints = GetData().points;
+            
+            if (drawPoints == null || drawPoints.Count == 0) return;
+
+            Gizmos.color = Color.cyan;
+            for (int i = 0; i < drawPoints.Count; i++)
+            { 
+                Gizmos.DrawSphere(drawPoints[i], 0.15f);
+
+                int next = (i + 1) % drawPoints.Count;
+                
+                Gizmos.DrawLine(drawPoints[i], drawPoints[next]);
+
+                UnityEditor.Handles.Label(drawPoints[i] + Vector3.up * 0.25f, i.ToString());
+            }
+        }
+#endif
     }
 }

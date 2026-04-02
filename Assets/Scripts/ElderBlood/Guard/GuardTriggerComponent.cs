@@ -1,4 +1,5 @@
 using Scellecs.Morpeh;
+using Sirenix.OdinInspector;
 using Unity.IL2CPP.CompilerServices;
 using UnityEngine;
 
@@ -8,10 +9,12 @@ namespace ElderBlood.Guard
     [Il2CppSetOption(Option.NullChecks, false)]
     [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
     [Il2CppSetOption(Option.DivideByZeroChecks, false)]
-    public struct GuardTriggerComponent : IComponent 
+    public struct GuardTriggerComponent : IComponent
     {
-        public Transform target;
         public float radius;
         public LineRenderer lineRenderer;
+
+        [Title("Runtime State")]
+        [ReadOnly] public Transform target;
     }
 }
