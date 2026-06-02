@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -6,36 +7,40 @@ namespace ElderBlood
 {
     public class LevelManager : MonoBehaviour
     {
-        public static LevelManager Instance { get; private set; }
-
+        [SerializeField] private LevelContainer _levelContainer;
         [SerializeField] private AssetReference _playerPrefab;
         [SerializeField] private WorldCreator _worldCreator;
+        [SerializeField] private Transform _levelsParent;
+
+        public event Action<Transform> PlayerSpawned;
 
         private GameObject _currentLevel;
         private GameObject _currentPlayer;
+        private int _currentIndex = -1;
 
-        private void Awake()
+        public void LoadFirstLevel()
         {
-            if (Instance != null)
-            {
-                Destroy(gameObject);
-                return;
-            }
-
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
+            LoadLevel(0);
         }
 
-        public void LoadLevel(AssetReference levelPrefabRef, Transform parent)
+        public void LoadNextLevel()
         {
-            StartCoroutine(LoadLevelRoutine(levelPrefabRef, parent));
+            var nextIndex = _currentIndex + 1;
+            if (nextIndex < _levelContainer.Count)
+                LoadLevel(nextIndex);
         }
 
-        private IEnumerator LoadLevelRoutine(AssetReference levelPrefabRef, Transform parent)
+        public void LoadLevel(int index)
+        {
+            _currentIndex = index;
+            StartCoroutine(LoadLevelRoutine(_levelContainer.GetByIndex(index)));
+        }
+
+        private IEnumerator LoadLevelRoutine(AssetReference levelPrefabRef)
         {
             UnloadCurrentLevel();
 
-            var handle = Addressables.InstantiateAsync(levelPrefabRef, parent);
+            var handle = Addressables.InstantiateAsync(levelPrefabRef, _levelsParent);
             yield return handle;
 
             _currentLevel = handle.Result;
@@ -64,7 +69,11 @@ namespace ElderBlood
         {
             var position = spawnPoint != null ? spawnPoint.position : Vector3.zero;
             var handle = Addressables.InstantiateAsync(_playerPrefab, position, Quaternion.identity);
-            handle.Completed += h => _currentPlayer = h.Result;
+            handle.Completed += h =>
+            {
+                _currentPlayer = h.Result;
+                PlayerSpawned?.Invoke(_currentPlayer.transform);
+            };
         }
     }
 }

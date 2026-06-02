@@ -14,7 +14,6 @@ namespace ElderBlood.Character.Input
         public World World { get; set;}
     
         private Filter _filter;
-        private Stash<InputComponent> _inputStash;
         private Stash<MoveComponent> _moveStash;
         private Stash<CharacterAnimationComponent> _animationStash;
     
@@ -24,14 +23,10 @@ namespace ElderBlood.Character.Input
         {
             _filter = World.Filter.With<InputComponent>()
                 .With<MoveComponent>().With<CharacterAnimationComponent>().Build();
-            _inputStash = World.GetStash<InputComponent>();
             _moveStash = World.GetStash<MoveComponent>();
             _animationStash = World.GetStash<CharacterAnimationComponent>();
 
-            ref var component =  ref _inputStash.Get(_filter.First());
-            component.inputActions = new Controls();
-            _controls = component.inputActions;
-        
+            _controls = new Controls();
             _controls.Enable();
         
             _controls.Main.Run.performed += EnableRun;
@@ -68,7 +63,6 @@ namespace ElderBlood.Character.Input
         {
             foreach (var entity in _filter)
             {
-                ref var inputComponent = ref _inputStash.Get(entity);
                 ref var moveComponent = ref _moveStash.Get(entity);
                 ref var animationComponent = ref _animationStash.Get(entity);
             
@@ -77,7 +71,7 @@ namespace ElderBlood.Character.Input
                     return;
                 }
 
-                moveComponent.moveVector = inputComponent.inputActions.Main.Move.ReadValue<Vector2>();
+                moveComponent.moveVector = _controls.Main.Move.ReadValue<Vector2>();
 
                 if (moveComponent.moveVector == Vector2.zero && !moveComponent.isRun)
                 {

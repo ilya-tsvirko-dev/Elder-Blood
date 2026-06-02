@@ -128,6 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 19002980}
+  - component: {fileID: 19002981}
   m_Layer: 0
   m_Name: EntryPoint
   m_TagString: Untagged
@@ -150,6 +151,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &19002981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19002979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6891fbcb9c05b1947a3b559b9877d22e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.MainEntryPoint
+  _view: {fileID: 1676516541}
+  _levelManager: {fileID: 126923705}
+  _camera: {fileID: 527788965}
 --- !u!1 &126923703
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,6 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e9e44834004cd4a84f98a733694cff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.GameManager
+  _levelContainer: {fileID: 11400000, guid: d8cf196b170881f40a2393e86fd3f392, type: 2}
   _playerPrefab:
     m_AssetGUID: 49a1878817ca2f94391b552349bf5c67
     m_SubObjectName: 
@@ -199,6 +216,7 @@ MonoBehaviour:
     m_SubObjectGUID: 
     m_EditorAssetChanged: 1
   _worldCreator: {fileID: 126923704}
+  _levelsParent: {fileID: 526083871}
 --- !u!4 &126923706
 Transform:
   m_ObjectHideFlags: 0
@@ -259,6 +277,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &526083870
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 526083871}
+  m_Layer: 0
+  m_Name: LevelTranform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &526083871
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 526083870}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1302546313}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &527788960
 GameObject:
@@ -406,7 +455,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 527788960}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 005d43b894190b440a03d8b580097bc5, type: 3}
   m_Name: 
@@ -650,7 +699,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: 'Play
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -677,10 +728,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 53.7
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -760,6 +811,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 527788963}
+  - {fileID: 526083871}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1352256567
@@ -911,7 +963,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 200, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1676516538
 MonoBehaviour:
@@ -1004,17 +1056,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1676516536}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f0b12d1cd5e7b94692321eb021dc23b, type: 3}
+  m_Script: {fileID: 11500000, guid: d831bf8e128db4a4e8044f0729480f93, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.MainMenuUI
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.MainMenuView
   _startButton: {fileID: 1676516538}
-  _firstLevel:
-    m_AssetGUID: 85f8f85f6b2d7d944b2eb66d84f54c4e
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_SubObjectGUID: 
-    m_EditorAssetChanged: 1
-  _parent: {fileID: 0}
 --- !u!1 &1939036774
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,8 +1167,8 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 126923706}
+  - {fileID: 19002980}
   - {fileID: 397837449}
   - {fileID: 1352256568}
   - {fileID: 1302546313}
   - {fileID: 1626961533}
-  - {fileID: 19002980}

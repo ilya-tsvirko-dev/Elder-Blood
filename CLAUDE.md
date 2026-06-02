@@ -21,7 +21,12 @@
 ```
 Assets/
 ├── Scripts/ElderBlood/
-│   ├── Startup.cs                  — инициализация ECS World, регистрация систем
+│   ├── WorldCreator.cs             — инициализация ECS World, регистрация систем (CreateWorld())
+│   ├── Bootstrap/BootstrapEntryPoint.cs — стартовая сцена → грузит Main
+│   ├── GameManager/
+│   │   ├── LevelManager.cs         — singleton, загрузка уровней через Addressables, спавн игрока
+│   │   └── LevelBootstrap.cs       — точка спавна игрока на уровне (PlayerSpawnPoint)
+│   ├── UI/MainMenuUI.cs            — главное меню, кнопка Start → LevelManager.LoadLevel
 │   ├── Camera/                     — CameraController (MonoBehaviour, не ECS)
 │   ├── Character/
 │   │   ├── Input/                  — InputComponent/System/Provider
@@ -29,18 +34,24 @@ Assets/
 │   ├── Guard/
 │   │   ├── GuardComponent/Provider — маркер охранника
 │   │   ├── GuardTriggerComponent/System — обнаружение игрока (OverlapCircle)
-│   │   ├── GuardBehavior/          — NavMesh-преследование цели
-│   │   ├── GuardPatrol/            — патрулирование по точкам
+│   │   ├── GuardBehavior/          — NavMesh-преследование цели / движение к patrolPoint
+│   │   ├── GuardPatrol/            — патрулирование по точкам с ожиданием
 │   │   └── Animation/              — анимация охранника
 │   ├── Common/Enums/               — MoveAnimationType
 │   └── Configs/
 │       ├── MainConfig.cs           — ScriptableObject, ссылка на GuardConfig
+│       ├── ConfigSetupComponent/Provider — носитель конфига
 │       └── Guard/GuardConfig.cs    — MaxHealth охранника
 ├── Configs/                        — .asset файлы конфигов
-├── Scenes/Test.unity               — единственная сцена
+├── Scenes/Bootstrap.unity, Main.unity — две сцены (Bootstrap → Main); уровни = Addressable-префабы
 ├── Prefabs/Characters/, Enemy/, Levels/
 └── Sprites/, Tilemaps/, Animation/
 ```
+
+### Поток загрузки
+1. `Bootstrap.unity` → `BootstrapEntryPoint` грузит сцену `Main`
+2. `Main.unity`: `MainMenuUI` (кнопка Start) + `LevelManager` (singleton, DontDestroyOnLoad)
+3. Start → `LevelManager.LoadLevel(levelRef)` → Addressables-инстанс уровня → `LevelBootstrap.PlayerSpawnPoint` → спавн игрока (Addressables) → `WorldCreator.CreateWorld()`
 
 ---
 
@@ -95,7 +106,7 @@ public class MyProvider : MonoProvider<MyComponent> { }
 
 ---
 
-## Порядок систем (Startup.cs)
+## Порядок систем (WorldCreator.cs → CreateWorld())
 1. `HealthShaderSystem`
 2. `InputSystem`
 3. `MoveSystem`
@@ -125,8 +136,9 @@ public class MyProvider : MonoProvider<MyComponent> { }
 - Когда цель в `minMagnitude` — триггерит анимацию атаки
 
 ### Охранник — патруль
-- `GuardPatrolSystem` циклично обходит список точек (`waypoints`)
-- При обнаружении цели патруль приостанавливается
+- `GuardPatrolSystem` циклично обходит `points` (List<Vector3>), на каждой точке ждёт `waitDuration`
+- Пишет цель в `GuardBehaviorComponent.patrolPoint` (движение делает GuardBehaviorSystem)
+- При обнаружении цели (`targetTransform != null`) патруль приостанавливается
 
 ### Конфиги
 - `ConfigSetupSystem` слушает `ConfigSetupEvent` → рассылает `GuardSetupConfigEvent`
@@ -145,5 +157,5 @@ public class MyProvider : MonoProvider<MyComponent> { }
 ---
 
 ## Что не реализовано (закомментировано)
-- `MoveNavMeshSystem` — закомментирован в Startup
+- `MoveNavMeshSystem` — не добавлена в `WorldCreator` (есть `MoveNavMeshComponent` + `MoveNavMeshProvider`)
 - Действия игрока: Sit, Jump, Hide, Magic, Death — есть в enum, нет в InputSystem

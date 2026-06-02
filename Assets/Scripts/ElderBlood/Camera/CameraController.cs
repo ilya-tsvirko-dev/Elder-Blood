@@ -22,8 +22,8 @@ public class CameraController : MonoBehaviour
     
     private void Start()
     {
-        _mainCamera.transform.position = _target.position + _offset;
-        _lastPosition = _mainCamera.transform.position;
+        if (_target != null)
+            SnapToTarget();
 
         if (_debug)
         {
@@ -75,8 +75,23 @@ public class CameraController : MonoBehaviour
         }
     }
 
+    public void SetTarget(Transform target)
+    {
+        _target = target;
+        SnapToTarget();
+    }
+
+    private void SnapToTarget()
+    {
+        _mainCamera.transform.position = _target.position + _offset;
+        _lastPosition = _mainCamera.transform.position;
+    }
+
     private void LateUpdate()
     {
+        if (_target == null)
+            return;
+
         _mainCamera.transform.position =  GetCameraPosition();
     }
 

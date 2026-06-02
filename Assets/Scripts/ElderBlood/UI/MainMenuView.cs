@@ -1,14 +1,14 @@
+using System;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 namespace ElderBlood
 {
-    public class MainMenuUI : MonoBehaviour
+    public class MainMenuView : MonoBehaviour
     {
         [SerializeField] private Button _startButton;
-        [SerializeField] private AssetReference _firstLevel;
-        [SerializeField] private Transform _parent;
+
+        public event Action StartClicked;
 
         private void Awake()
         {
@@ -20,9 +20,14 @@ namespace ElderBlood
             _startButton.onClick.RemoveListener(OnStartClicked);
         }
 
+        public void HideStartButton()
+        {
+            _startButton.gameObject.SetActive(false);
+        }
+
         private void OnStartClicked()
         {
-            LevelManager.Instance.LoadLevel(_firstLevel, _parent);
+            StartClicked?.Invoke();
         }
     }
 }
