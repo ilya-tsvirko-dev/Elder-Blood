@@ -12,7 +12,9 @@ namespace ElderBlood
         protected override void Initialize()
         {
             base.Initialize();
-            GetData().material = GetComponent<SpriteRenderer>().material;
+            ref var data = ref GetData();
+            data.material = GetComponent<SpriteRenderer>().material;
+            data.alpha = 1f;
         }
     }
 }

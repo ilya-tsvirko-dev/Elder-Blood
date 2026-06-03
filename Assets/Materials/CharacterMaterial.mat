@@ -57,12 +57,13 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 1
+    - _Alpha: 0.992
     - _EnableExternalAlpha: 0
     - _FillAmount: 1
     - _Fuzziness: 0.24
     - _Range: 0.66
     m_Colors:
+    - White: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _ColorFrom: {r: 1, g: 0.495283, b: 0.495283, a: 0}
     - _ColorTo: {r: 0.08067104, g: 0.0710217, b: 0.7924528, a: 0}

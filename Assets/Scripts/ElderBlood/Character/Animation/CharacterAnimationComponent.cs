@@ -19,5 +19,6 @@ namespace ElderBlood.Character.Animation
         [ReadOnly] public CharacterAnimationType type;
         [ReadOnly] public MoveAnimationType moveType;
         [ReadOnly] public Vector2 moveVector;
+        [ReadOnly] public float actionTimer;
     }
 }

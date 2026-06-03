@@ -8,6 +8,7 @@ namespace ElderBlood.Character.Animation
         Death,
         Magic,
         WakeUp,
+        Hide,
         Attack,
     }
 }

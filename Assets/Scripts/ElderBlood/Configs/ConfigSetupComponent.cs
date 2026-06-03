@@ -1,7 +1,7 @@
 using Scellecs.Morpeh;
 using Unity.IL2CPP.CompilerServices;
 
-namespace DefaultNamespace.Configs
+namespace ElderBlood.Configs
 {
     [System.Serializable]
     [Il2CppSetOption(Option.NullChecks, false)]

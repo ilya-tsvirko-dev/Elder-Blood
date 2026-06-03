@@ -11,5 +11,5 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3c609eb3b1b648ef950c420ec1f5d070, type: 3}
   m_Name: GuardConfig
-  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.Configs.Guard.GuardConfig
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.Configs.Guard.GuardConfig
   MaxHealth: 200

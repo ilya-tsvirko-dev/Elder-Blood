@@ -4,7 +4,7 @@ using Scellecs.Morpeh;
 using Scellecs.Morpeh.Collections;
 using Unity.IL2CPP.CompilerServices;
 
-namespace DefaultNamespace.Configs.Guard
+namespace ElderBlood.Configs.Guard
 {
     [Il2CppSetOption(Option.NullChecks, false)]
     [Il2CppSetOption(Option.ArrayBoundsChecks, false)]

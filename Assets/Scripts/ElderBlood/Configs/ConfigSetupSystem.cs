@@ -1,9 +1,9 @@
-using DefaultNamespace.Configs.Guard;
+using ElderBlood.Configs.Guard;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Collections;
 using Unity.IL2CPP.CompilerServices;
 
-namespace DefaultNamespace.Configs
+namespace ElderBlood.Configs
 {
     [Il2CppSetOption(Option.NullChecks, false)]
     [Il2CppSetOption(Option.ArrayBoundsChecks, false)]

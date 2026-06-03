@@ -1,5 +1,5 @@
-using DefaultNamespace.Configs;
-using DefaultNamespace.Configs.Guard;
+using ElderBlood.Configs;
+using ElderBlood.Configs.Guard;
 using ElderBlood.Character.Animation;
 using ElderBlood.Character.Input;
 using ElderBlood.Guard;

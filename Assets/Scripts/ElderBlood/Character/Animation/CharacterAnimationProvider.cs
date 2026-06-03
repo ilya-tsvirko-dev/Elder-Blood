@@ -8,7 +8,7 @@ namespace ElderBlood.Character.Animation
     [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
     [Il2CppSetOption(Option.DivideByZeroChecks, false)]
     [RequireComponent(typeof(Animator))]
-    public sealed class CharacterAnimationProvider : MonoProvider<CharacterAnimationComponent> 
+    public sealed class CharacterAnimationProvider : MonoProvider<CharacterAnimationComponent>
     {
         protected override void Initialize()
         {

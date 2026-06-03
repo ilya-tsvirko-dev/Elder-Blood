@@ -16,5 +16,7 @@ namespace ElderBlood
         [Title("Runtime State")]
         [ReadOnly] public float fillAmount;
         [ReadOnly] public float neededFillAmount;
+        [ReadOnly] public bool isFaded;
+        [ReadOnly] public float alpha;
     }
 }

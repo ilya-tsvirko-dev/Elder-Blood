@@ -11,5 +11,5 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4207623f326f4fb3b50b5e34a459cd18, type: 3}
   m_Name: MainConfig
-  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.Configs.MainConfig
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.Configs.MainConfig
   GuardConfig: {fileID: 11400000, guid: f29e6bd08bbbd784aa4d7741932dd093, type: 2}

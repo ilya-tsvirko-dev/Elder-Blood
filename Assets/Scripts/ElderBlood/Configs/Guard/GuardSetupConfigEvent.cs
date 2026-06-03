@@ -1,6 +1,6 @@
 using Scellecs.Morpeh;
 
-namespace DefaultNamespace.Configs.Guard
+namespace ElderBlood.Configs.Guard
 {
     public struct GuardSetupConfigEvent : IEventData
     {

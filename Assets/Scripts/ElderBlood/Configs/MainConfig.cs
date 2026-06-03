@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using DefaultNamespace.Configs.Guard;
+using ElderBlood.Configs.Guard;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-namespace DefaultNamespace.Configs
+namespace ElderBlood.Configs
 {
     [CreateAssetMenu(fileName = "MainConfig", menuName = "Configs/MainConfig", order = 1)]
     public class MainConfig : ScriptableObject
