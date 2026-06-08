@@ -1,11 +1,9 @@
-using ElderBlood.Configs;
-using ElderBlood.Configs.Guard;
-using ElderBlood.Character.Animation;
-using ElderBlood.Character.Input;
-using ElderBlood.Guard;
-using ElderBlood.Guard.Animation;
-using ElderBlood.Guard.GuardBehavior;
-using ElderBlood.Guard.GuardPatrol;
+using ElderBlood.Ecs.Blood;
+using ElderBlood.Ecs.Character;
+using ElderBlood.Ecs.Config;
+using ElderBlood.Ecs.Guard;
+using ElderBlood.Ecs.Health;
+using ElderBlood.Ecs.Movement;
 using Scellecs.Morpeh;
 using UnityEngine;
 
@@ -24,12 +22,15 @@ namespace ElderBlood
             systemsGroup.AddSystem(new InputSystem());
             systemsGroup.AddSystem(new MoveSystem());
             systemsGroup.AddSystem(new CharacterAnimationSystem());
-            systemsGroup.AddSystem(new GuardTriggerSystem());
+            systemsGroup.AddSystem(new GuardVisionSystem());
+            systemsGroup.AddSystem(new GuardAlertSystem());
             systemsGroup.AddSystem(new GuardBehaviorSystem());
             systemsGroup.AddSystem(new GuardAnimationSystem());
             systemsGroup.AddSystem(new GuardSetupSystem());
             systemsGroup.AddSystem(new ConfigSetupSystem());
             systemsGroup.AddSystem(new GuardPatrolSystem());
+            systemsGroup.AddSystem(new DamageSystem());
+            systemsGroup.AddSystem(new DrainSystem());
 
             _world.AddSystemsGroup(order: 0, systemsGroup);
         }

@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
+using VContainer.Unity;
 
 namespace ElderBlood
 {
-    public class CameraPresenter : IDisposable
+    public class CameraPresenter : IStartable, IDisposable
     {
         private readonly CameraController _camera;
         private readonly LevelManager _levelManager;
@@ -12,7 +13,10 @@ namespace ElderBlood
         {
             _camera = camera;
             _levelManager = levelManager;
+        }
 
+        public void Start()
+        {
             _levelManager.PlayerSpawned += OnPlayerSpawned;
         }
 

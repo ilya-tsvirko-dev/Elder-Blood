@@ -147,18 +147,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Death"",
+                    ""name"": ""Fade"",
                     ""type"": ""Button"",
-                    ""id"": ""245afd89-7372-4588-b04e-5d91f0736c6f"",
+                    ""id"": ""2c9b3316-df6a-4b73-96e3-bb965efd971f"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Fade"",
+                    ""name"": ""Interact"",
                     ""type"": ""Button"",
-                    ""id"": ""2c9b3316-df6a-4b73-96e3-bb965efd971f"",
+                    ""id"": ""00288cc5-f228-4e6a-b986-4b54677a0dfc"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -278,23 +278,23 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""01a20c83-07bb-4745-84c0-2042fae036f6"",
-                    ""path"": ""<Keyboard>/f"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Death"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""3394ed0f-6f0f-4fd4-ab13-6b3b0648d7a8"",
                     ""path"": ""<Keyboard>/tab"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Fade"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a803b761-e8c3-448d-b234-2fcf6bcba47d"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -328,8 +328,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Main_Jump = m_Main.FindAction("Jump", throwIfNotFound: true);
         m_Main_Hide = m_Main.FindAction("Hide", throwIfNotFound: true);
         m_Main_Magic = m_Main.FindAction("Magic", throwIfNotFound: true);
-        m_Main_Death = m_Main.FindAction("Death", throwIfNotFound: true);
         m_Main_Fade = m_Main.FindAction("Fade", throwIfNotFound: true);
+        m_Main_Interact = m_Main.FindAction("Interact", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -416,8 +416,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_Jump;
     private readonly InputAction m_Main_Hide;
     private readonly InputAction m_Main_Magic;
-    private readonly InputAction m_Main_Death;
     private readonly InputAction m_Main_Fade;
+    private readonly InputAction m_Main_Interact;
     /// <summary>
     /// Provides access to input actions defined in input action map "Main".
     /// </summary>
@@ -454,13 +454,13 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Magic => m_Wrapper.m_Main_Magic;
         /// <summary>
-        /// Provides access to the underlying input action "Main/Death".
-        /// </summary>
-        public InputAction @Death => m_Wrapper.m_Main_Death;
-        /// <summary>
         /// Provides access to the underlying input action "Main/Fade".
         /// </summary>
         public InputAction @Fade => m_Wrapper.m_Main_Fade;
+        /// <summary>
+        /// Provides access to the underlying input action "Main/Interact".
+        /// </summary>
+        public InputAction @Interact => m_Wrapper.m_Main_Interact;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -505,12 +505,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Magic.started += instance.OnMagic;
             @Magic.performed += instance.OnMagic;
             @Magic.canceled += instance.OnMagic;
-            @Death.started += instance.OnDeath;
-            @Death.performed += instance.OnDeath;
-            @Death.canceled += instance.OnDeath;
             @Fade.started += instance.OnFade;
             @Fade.performed += instance.OnFade;
             @Fade.canceled += instance.OnFade;
+            @Interact.started += instance.OnInteract;
+            @Interact.performed += instance.OnInteract;
+            @Interact.canceled += instance.OnInteract;
         }
 
         /// <summary>
@@ -540,12 +540,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Magic.started -= instance.OnMagic;
             @Magic.performed -= instance.OnMagic;
             @Magic.canceled -= instance.OnMagic;
-            @Death.started -= instance.OnDeath;
-            @Death.performed -= instance.OnDeath;
-            @Death.canceled -= instance.OnDeath;
             @Fade.started -= instance.OnFade;
             @Fade.performed -= instance.OnFade;
             @Fade.canceled -= instance.OnFade;
+            @Interact.started -= instance.OnInteract;
+            @Interact.performed -= instance.OnInteract;
+            @Interact.canceled -= instance.OnInteract;
         }
 
         /// <summary>
@@ -642,18 +642,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMagic(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Death" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnDeath(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "Fade" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnFade(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInteract(InputAction.CallbackContext context);
     }
 }

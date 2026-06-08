@@ -8,12 +8,12 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - ' '
+  - 
   - Water
   - UI
   - Character
   - Enemy
-  - 
+  - Wall
   - 
   - 
   - 
@@ -49,6 +49,9 @@ TagManager:
     locked: 0
   - name: Decorative
     uniqueID: 2303770649
+    locked: 0
+  - name: Interact
+    uniqueID: 2485147335
     locked: 0
   - name: Character
     uniqueID: 3156241451

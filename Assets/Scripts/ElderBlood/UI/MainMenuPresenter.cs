@@ -1,8 +1,9 @@
 using System;
+using VContainer.Unity;
 
 namespace ElderBlood
 {
-    public class MainMenuPresenter : IDisposable
+    public class MainMenuPresenter : IStartable, IDisposable
     {
         private readonly MainMenuView _view;
         private readonly LevelManager _levelManager;
@@ -11,7 +12,10 @@ namespace ElderBlood
         {
             _view = view;
             _levelManager = levelManager;
+        }
 
+        public void Start()
+        {
             _view.StartClicked += OnStartClicked;
         }
 

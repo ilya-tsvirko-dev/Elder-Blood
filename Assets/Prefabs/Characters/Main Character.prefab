@@ -18,6 +18,7 @@ GameObject:
   - component: {fileID: 6861351710820199149}
   - component: {fileID: 2127696675499487805}
   - component: {fileID: 7534821196060140425}
+  - component: {fileID: 4725350796156359380}
   m_Layer: 6
   m_Name: Main Character
   m_TagString: Untagged
@@ -42,6 +43,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &1230739641070100064
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -85,8 +87,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1138725845
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_Sprite: {fileID: 1715777532, guid: 16679a58db30b364aac6f1944ff35451, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -96,7 +99,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &4909559585229406106
 Animator:
@@ -209,6 +211,8 @@ MonoBehaviour:
     material: {fileID: 0}
     fillAmount: 0
     neededFillAmount: 0
+    isFaded: 0
+    alpha: 0
 --- !u!114 &6943112233594704621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,8 +226,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializedData:
-    healthPoint: 100
     maxHealthPoint: 100
+    healthPoint: 100
 --- !u!114 &6861351710820199149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,10 +254,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     rigidbody: {fileID: 0}
-    moveVector: {x: 0, y: 0}
-    isRun: 0
     speed: 30
     runSpeed: 80
+    moveVector: {x: 0, y: 0}
+    isRun: 0
     isAction: 0
 --- !u!114 &7534821196060140425
 MonoBehaviour:
@@ -269,7 +273,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     animator: {fileID: 4909559585229406106}
+    shadowCaster2D: {fileID: 0}
     type: 0
     moveType: 0
     moveVector: {x: 0, y: 0}
-    shadowCaster2D: {fileID: 0}
+    actionTimer: 0
+--- !u!114 &4725350796156359380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264626752388166439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1ec8774f0cc9c24185157ea071ef6ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.Ecs.Blood.BloodProvider
+  serializedData:
+    capacity: 100
+    drainRadius: 3
+    current: 0

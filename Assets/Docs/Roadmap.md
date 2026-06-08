@@ -10,19 +10,25 @@
 
 ## Фаза 0 — Технический долг *(в работе)*
 - [x] Неймспейсы `DefaultNamespace.*` → `ElderBlood.*`.
-- [ ] **Внедрить DI — VContainer.** Фундаментальный пункт, делаем рано (все следующие системы будут принимать зависимости через DI).
-  - Подключить пакет VContainer.
-  - Корневой `LifetimeScope` (Main/приложение) + scope на уровень/забег.
-  - Регистрировать: конфиги (`MainConfig`/`GuardConfig` + будущие `AbilityConfig`/`UpgradeConfig`), сервисы (`SaveSystem`, аудио), менеджеры (`LevelManager`).
-  - Конструировать Morpeh-системы через контейнер (инъекция зависимостей) вместо ручного `new` в `WorldCreator`.
-  - Где упростит — заменить ручную рассылку конфигов (`ConfigSetupSystem`/`Event`) на инъекцию конфигов.
-- [ ] Централизовать магические строки (шейдер / аниматор / слой `"Character"`).
-- [ ] Удалить мёртвый NavMesh игрока (`MoveNavMeshComponent` / `MoveNavMeshProvider`).
-- [ ] Организация компонентов по папкам *(опц.)*.
-- [ ] Дочистить `Fade` в инпуте: сохранить action `Fade` в `Controls.inputactions` (перегенерит `Controls.cs`).
+- [~] **Внедрить DI — VContainer.** Фундаментальный пункт (все следующие системы будут принимать зависимости через DI).
+  - [x] Подключить пакет VContainer (1.18.0, git URL в `manifest.json`).
+  - [x] Корневой `GameLifetimeScope : LifetimeScope` — регистрирует `MainMenuView`/`LevelManager`/`CameraController` + презентеры как entry points. `MainEntryPoint` удалён.
+  - [x] **Editor-часть:** пакет подтянут; в `Main.unity` `GameLifetimeScope` повешен и ссылки проставлены; кнопка Start и камера работают.
+  - [ ] Конструировать Morpeh-системы через контейнер — **отложено**: делаем по мере появления у систем зависимостей (конфиги/сервисы, Фаза 1+); сейчас `new` в `WorldCreator` остаётся.
+  - [ ] Где упростит — заменить ручную рассылку конфигов (`ConfigSetupSystem`/`Event`) на инъекцию (вместе с переводом систем).
+  - Доп. scope на уровень/забег + регистрация сервисов (`SaveSystem`, аудио) и конфигов — по мере надобности в соответствующих фазах.
+- [x] Централизовать магические строки → `Common/AnimatorParams.cs`, `Common/ShaderIds.cs`, `Common/Layers.cs`. Переведены `CharacterAnimationSystem`, `GuardAnimationSystem`, `HealthShaderSystem`, `GuardTriggerSystem`.
+- [x] Удалён мёртвый `Guard/GuardAnimation.cs` (MonoBehaviour, легаси до ECS, заменён `GuardAnimationSystem`).
+- [~] ~~Удалить мёртвый NavMesh игрока~~ — **отменено**: `MoveNavMeshComponent`/`MoveNavMeshProvider` используются охранниками (`GuardBehaviorSystem` + `Guard.prefab`), это не мёртвый код.
+- [x] Организация: корневые файлы разложены в `Movement/` и `Health/`. `WorldCreator` оставлен в корне.
+- [x] Разделение ECS / не-ECS: весь ECS-код перенесён в `Ecs/` под неймспейсы `ElderBlood.Ecs.<Domain>` (Character/Movement/Health/Guard/Config, схлопнуто по доменам). Unity-слой и SO-конфиги/Common остались в `ElderBlood.*`. guid'ы целы (ссылки в сценах/префабах по guid).
+- [x] `Fade` добавлен в `Controls.inputactions` (Tab) — `Controls.cs` перегенерён, проект компилится.
 
 ## Фаза 1 — Ядро детекта
 Конус зрения + линия видимости (LoS) + плавная шкала обнаружения.
+
+**Статус: код готов, ждёт editor-части.** Созданы `Guard/Vision/`: `PerceptionState`, `GuardVisionComponent`(+Provider), `GuardPerceptionComponent`(+Provider), `GuardVisionSystem`. В `WorldCreator` `GuardTriggerSystem` заменён на `GuardVisionSystem`. Старый модуль детекта удалён (`GuardTriggerSystem/Component/Provider`, `DebugTriggerEvent`). Дебаг-конус рисуется через `Debug.DrawRay` (Scene view), цвет по `state`.
+**Editor-часть (на разработчике):** на префабе `Guard` убрать missing-`GuardTriggerProvider`, добавить `GuardVisionProvider` (задать `viewRadius`, `viewAngle`, `eyeOffset`, `obstacleMask` = слой стен-тайлмапа, `fillSpeed`, `decaySpeed`) и `GuardPerceptionProvider`.
 
 **Объём v1 (зафиксирован):**
 - Заметность зависит **только от дистанции** (без множителей за бег/Sit/Fade).
@@ -41,6 +47,9 @@
 
 ## Фаза 2 — FSM тревоги
 Состояния: Patrol → Suspicious → Chase → Search → Return.
+
+**Статус: код готов, ждёт editor-части.** Созданы `Ecs/Guard/Alert/`: `GuardAlertState`, `GuardAlertComponent`(+Provider), `GuardAlertSystem`. `GuardPatrolSystem` теперь продвигает маршрут только в `Patrol` (требует `GuardAlertComponent` в фильтре). `GuardAlertSystem` добавлен в `WorldCreator` (Vision → Alert → Behavior). Suspicious = стоп + конус к источнику; Search = идёт к `lastSeenPosition`, таймер → Return; Return → к `patrol.currentPoint` → Patrol. `targetTransform` (Chase) по-прежнему ставит `GuardVisionSystem`.
+**Editor-часть (на разработчике):** на префабе `Guard` добавить `GuardAlertProvider`, задать `searchDuration` (напр. 3) и `returnReachDistance` (напр. 0.3). **Без `GuardAlertProvider` охранник перестанет патрулировать** (патруль теперь требует этот компонент).
 
 **Объём v1 (зафиксирован):**
 - **Suspicious** — стоит на месте и поворачивается к источнику (без шагов навстречу).
@@ -67,6 +76,14 @@ Return     → Patrol      : дошёл до маршрута
 
 ## Фаза 3 — Система крови (ядро экономики)
 Единый пул Кровь = HP + мана + валюта, с потолком ёмкости (~3 человек, качается). Слив с источников (спящие жители, стражники, мёртвые животные). Урон → кровь; кровь = 0 → смерть.
+
+**Разбито на 3a (урон/смерть) и 3b (слив).**
+
+**3a — код готов, ждёт editor-части.** Домен `Ecs/Blood/`: `BloodComponent`(+Provider, `current`/`capacity`, float, старт = capacity), `DamageEvent`, `PlayerDeathEvent`, `DamageSystem`. `GuardBehaviorComponent` получил `attackDamage`; `GuardBehaviorSystem` в атаке (Chase + minMagnitude) поднимает `DamageEvent{attackDamage*dt}` (непрерывный DPS, пока цель в радиусе). `DamageSystem` (Subscribe) вычитает из крови игрока; при ≤0 → ставит `Death`-анимацию + `isAction` и поднимает `PlayerDeathEvent`. Игрок получает `BloodComponent` рядом с `HealthComponent` (heal-шейдер пока на Health; свяжем с кровью в HUD/Фаза 8). Реальный рестарт по смерти — Фаза 7.
+**Editor-часть (на разработчике):** на префаб игрока добавить `BloodProvider` (`capacity`, напр. 100); на префабе `Guard` задать `attackDamage` (напр. 30 — это DPS, пока бьёт).
+
+**3b — код готов, ждёт editor-части.** `BloodSourceComponent`(+Provider: `transform` ставит провайдер, `amount` в инспекторе), `DrainEvent`, `DrainSystem` (по `Interact`/F находит ближайший источник в `BloodComponent.drainRadius`, мгновенно переливает с учётом потолка, блок при полном пуле). `InputSystem` поднимает `DrainEvent` по `Interact`. `BloodComponent` получил `drainRadius`. Поле `state` у источника отложено в Фазу 6.
+**Editor-часть:** игроку задать `drainRadius` (напр. 1.5); создать тестовый источник — GameObject + `BloodSourceProvider` (`amount`, напр. 50).
 
 **Объём v1 (зафиксирован):**
 - **Раздельные компоненты:** `BloodComponent` (игрок: `current`, `capacity`), `BloodSourceComponent` (`amount`, `state`, `canDrain`), `HealthComponent` оставляем для тех, кто получает урон (стражники).

@@ -14,6 +14,12 @@
 - **События Morpeh** — связь между системами и из ECS в UI.
 - **Правила кодинга**: без LINQ, for-циклы, IL2CPP-директивы на компонентах, нейминг `*Component/*System/*Provider/*Config/*Event`, комментарии на английском.
 
+## Разделение ECS / не-ECS
+- **ECS-код** — в `Assets/Scripts/ElderBlood/Ecs/` под неймспейсами `ElderBlood.Ecs.<Domain>` (по доменам, схлопнуто): `Ecs.Character`, `Ecs.Movement`, `Ecs.Health`, `Ecs.Guard`, `Ecs.Config`. Сюда входят компоненты, системы, провайдеры (мост), события, enum'ы компонентов.
+- **Unity-слой** — в текущих неймспейсах `ElderBlood.*`: `GameManager` (`LevelManager`, `WorldCreator`, `GameLifetimeScope`, `LevelBootstrap`), `Bootstrap`, `UI`, `Camera`.
+- **Данные/общее** — SO-конфиги в `ElderBlood.Configs(.Guard)` (`Configs/`), константы в `ElderBlood.Common` (`Common/`).
+- Папки-подкаталоги внутри домена (напр. `Ecs/Guard/Vision`) оставлены для навигации, но неймспейс у домена один.
+
 ---
 
 ## Слои

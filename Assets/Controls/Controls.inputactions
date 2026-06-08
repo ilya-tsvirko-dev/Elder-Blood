@@ -61,18 +61,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Death",
+                    "name": "Fade",
                     "type": "Button",
-                    "id": "245afd89-7372-4588-b04e-5d91f0736c6f",
+                    "id": "2c9b3316-df6a-4b73-96e3-bb965efd971f",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Fade",
+                    "name": "Interact",
                     "type": "Button",
-                    "id": "2c9b3316-df6a-4b73-96e3-bb965efd971f",
+                    "id": "00288cc5-f228-4e6a-b986-4b54677a0dfc",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -192,23 +192,23 @@
                 },
                 {
                     "name": "",
-                    "id": "01a20c83-07bb-4745-84c0-2042fae036f6",
-                    "path": "<Keyboard>/f",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Death",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "3394ed0f-6f0f-4fd4-ab13-6b3b0648d7a8",
                     "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Fade",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a803b761-e8c3-448d-b234-2fcf6bcba47d",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -34,7 +34,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!120 &1678012134560285228
 LineRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -80,6 +80,7 @@ LineRenderer:
   m_SortingLayerID: -1782753673
   m_SortingLayer: 5
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Positions:
   - {x: 1.3, y: 0, z: 10}
   - {x: 1.2750208, y: 0.2536174, z: 10}
@@ -168,7 +169,6 @@ LineRenderer:
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
-  m_MaskInteraction: 0
   m_UseWorldSpace: 0
   m_Loop: 1
   m_ApplyActiveColorSpace: 1
@@ -189,9 +189,11 @@ GameObject:
   - component: {fileID: 163828505049110447}
   - component: {fileID: 5824220088479837259}
   - component: {fileID: 5311350741331277741}
-  - component: {fileID: 637760186438621286}
   - component: {fileID: 5833565324845665005}
   - component: {fileID: 8497794638867034144}
+  - component: {fileID: 4297157948246358756}
+  - component: {fileID: 1606335150097528938}
+  - component: {fileID: 3524400426831069005}
   m_Layer: 7
   m_Name: Guard
   m_TagString: Untagged
@@ -217,6 +219,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7640712369831899930
 SpriteRenderer:
+  serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -262,6 +265,7 @@ SpriteRenderer:
   m_SortingLayerID: -1138725845
   m_SortingLayer: 4
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -621329479, guid: b69deee90df10a14d8e731801507ab84, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -271,7 +275,6 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!95 &6713387294474207264
 Animator:
@@ -382,10 +385,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     rigidbody: {fileID: 9111787585779885567}
-    moveVector: {x: 0, y: 0}
-    isRun: 0
     speed: 15
     runSpeed: 40
+    moveVector: {x: 0, y: 0}
+    isRun: 0
     isAction: 0
 --- !u!114 &163828505049110447
 MonoBehaviour:
@@ -430,26 +433,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   serializedData:
-    targetTransform: {fileID: 0}
-    patrolPoint: {x: 0, y: 0, z: 0}
     transform: {fileID: 2535124292375936500}
     minMagnitude: 0.75
---- !u!114 &637760186438621286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5391795559169507127}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e28ba32b1f74e14837fb01f07723e80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  serializedData:
-    target: {fileID: 2535124292375936500}
-    radius: 4
-    lineRenderer: {fileID: 1678012134560285228}
+    attackDamage: 25
+    targetTransform: {fileID: 0}
+    patrolPoint: {x: 0, y: 0, z: 0}
 --- !u!114 &5833565324845665005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -463,8 +451,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HealthProvider
   serializedData:
-    healthPoint: 100
     maxHealthPoint: 100
+    healthPoint: 100
 --- !u!114 &8497794638867034144
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,3 +465,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cac7701557944178b6b4c044db09e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.MoveNavMeshProvider
+--- !u!114 &4297157948246358756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5391795559169507127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 779bce958cbd637418dd4e30c7299375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.Guard.Vision.GuardVisionProvider
+  serializedData:
+    viewRadius: 4
+    viewAngle: 90
+    eyeOffset: {x: 0, y: 0}
+    obstacleMask:
+      serializedVersion: 2
+      m_Bits: 256
+    fillSpeed: 2
+    decaySpeed: 1
+    facing: {x: 0, y: 0}
+--- !u!114 &1606335150097528938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5391795559169507127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90cee8cf78d79af4c93f4ec50b9b2956, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.Guard.Vision.GuardPerceptionProvider
+  serializedData:
+    awareness: 0
+    state: 0
+    lastSeenPosition: {x: 0, y: 0, z: 0}
+--- !u!114 &3524400426831069005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5391795559169507127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6317145210f78e46992f668ba7e5474, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.Ecs.Guard.GuardAlertProvider
+  serializedData:
+    searchDuration: 10
+    returnReachDistance: 0.3
+    state: 0
+    searchTimer: 0
+    searchPoint: {x: 0, y: 0, z: 0}
