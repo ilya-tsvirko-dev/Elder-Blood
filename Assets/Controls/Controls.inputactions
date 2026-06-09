@@ -61,18 +61,36 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Fade",
+                    "name": "Interact",
                     "type": "Button",
-                    "id": "2c9b3316-df6a-4b73-96e3-bb965efd971f",
+                    "id": "00288cc5-f228-4e6a-b986-4b54677a0dfc",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Interact",
+                    "name": "Invisibility",
                     "type": "Button",
-                    "id": "00288cc5-f228-4e6a-b986-4b54677a0dfc",
+                    "id": "a10529e2-043d-475e-96eb-a587310460df",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BloodPuddle",
+                    "type": "Button",
+                    "id": "e680a01d-cc96-4104-ae3f-dee8c63f800f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BloodSight",
+                    "type": "Button",
+                    "id": "928791fb-078f-42ba-8316-6f1c2ab3774f",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -192,23 +210,45 @@
                 },
                 {
                     "name": "",
-                    "id": "3394ed0f-6f0f-4fd4-ab13-6b3b0648d7a8",
-                    "path": "<Keyboard>/tab",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Fade",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "a803b761-e8c3-448d-b234-2fcf6bcba47d",
                     "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "370baa2d-04ea-46ec-9f01-4dbdcbf35bb0",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Invisibility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0b0d29d7-e8ae-4754-b6ea-dc4be8a4c087",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BloodPuddle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "84f58eb4-0963-485b-a606-431f727fc79b",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BloodSight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

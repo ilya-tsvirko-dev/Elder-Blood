@@ -1,15 +1,16 @@
-using ElderBlood.Configs;
 using Scellecs.Morpeh;
 using Unity.IL2CPP.CompilerServices;
+using UnityEngine;
 
-namespace ElderBlood.Ecs.Config
+namespace ElderBlood.Ecs.Abilities
 {
     [System.Serializable]
     [Il2CppSetOption(Option.NullChecks, false)]
     [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
     [Il2CppSetOption(Option.DivideByZeroChecks, false)]
-    public struct ConfigSetupComponent : IComponent
+    public struct BloodPuddleActiveComponent : IComponent
     {
-        public MainConfig config;
+        public Vector3 origin;
+        public float radius;
     }
 }

@@ -15,6 +15,7 @@ namespace ElderBlood.Ecs.Blood
 
         private Filter _filter;
         private Stash<BloodComponent> _bloodStash;
+        private Stash<ShieldComponent> _shieldStash;
         private Stash<CharacterAnimationComponent> _animationStash;
         private Stash<MoveComponent> _moveStash;
 
@@ -26,6 +27,7 @@ namespace ElderBlood.Ecs.Blood
             _filter = World.Filter.With<BloodComponent>().With<CharacterAnimationComponent>()
                 .With<MoveComponent>().Build();
             _bloodStash = World.GetStash<BloodComponent>();
+            _shieldStash = World.GetStash<ShieldComponent>();
             _animationStash = World.GetStash<CharacterAnimationComponent>();
             _moveStash = World.GetStash<MoveComponent>();
 
@@ -54,7 +56,26 @@ namespace ElderBlood.Ecs.Blood
                         continue;
                     }
 
-                    blood.current -= damage.amount;
+                    var remaining = damage.amount;
+
+                    // Shield absorbs first (if present and unlocked).
+                    if (_shieldStash.Has(entity))
+                    {
+                        ref var shield = ref _shieldStash.Get(entity);
+                        if (shield.unlocked && shield.current > 0f)
+                        {
+                            var absorbed = shield.current < remaining ? shield.current : remaining;
+                            shield.current -= absorbed;
+                            remaining -= absorbed;
+                        }
+                    }
+
+                    if (remaining <= 0f)
+                    {
+                        continue;
+                    }
+
+                    blood.current -= remaining;
                     if (blood.current > 0f)
                     {
                         continue;

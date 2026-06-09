@@ -78,7 +78,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1782753673
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Positions:
@@ -194,6 +194,7 @@ GameObject:
   - component: {fileID: 4297157948246358756}
   - component: {fileID: 1606335150097528938}
   - component: {fileID: 3524400426831069005}
+  - component: {fileID: 354857860074540334}
   m_Layer: 7
   m_Name: Guard
   m_TagString: Untagged
@@ -263,7 +264,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1138725845
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -621329479, guid: b69deee90df10a14d8e731801507ab84, type: 3}
@@ -390,6 +391,7 @@ MonoBehaviour:
     moveVector: {x: 0, y: 0}
     isRun: 0
     isAction: 0
+    speedMultiplier: 0
 --- !u!114 &163828505049110447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -521,3 +523,18 @@ MonoBehaviour:
     state: 0
     searchTimer: 0
     searchPoint: {x: 0, y: 0, z: 0}
+--- !u!114 &354857860074540334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5391795559169507127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c1ea2b105a014d4f8240e2480a64490, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.Ecs.Blood.BloodSourceProvider
+  serializedData:
+    transform: {fileID: 2535124292375936500}
+    amount: 50

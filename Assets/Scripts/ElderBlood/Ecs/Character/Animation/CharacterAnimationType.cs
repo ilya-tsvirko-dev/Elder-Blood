@@ -3,7 +3,7 @@ namespace ElderBlood.Ecs.Character
     public enum CharacterAnimationType
     {
         None,
-        Sit,
+        Puddle,
         Jump,
         Death,
         Magic,

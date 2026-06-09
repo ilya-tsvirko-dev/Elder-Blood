@@ -44,9 +44,9 @@ namespace ElderBlood.Ecs.Character
                     SetActionAnimation(animator, actionType);
                     animationComponent.type = CharacterAnimationType.None;
 
-                    // Sit is held until key release (cleared by WakeUp), so it gets no timer.
+                    // Blood Puddle is held externally (until move/victim) and gets no timer.
                     // One-shot actions lock movement for the clip duration.
-                    if (actionType != CharacterAnimationType.Sit)
+                    if (actionType != CharacterAnimationType.Puddle)
                     {
                         var duration = GetActionDuration(animator, actionType);
                         if (duration > 0f)
@@ -103,7 +103,7 @@ namespace ElderBlood.Ecs.Character
 
             var trigger = type switch
             {
-                CharacterAnimationType.Sit => AnimatorParams.Sit,
+                CharacterAnimationType.Puddle => AnimatorParams.Puddle,
                 CharacterAnimationType.Jump => AnimatorParams.Jump,
                 CharacterAnimationType.Death => AnimatorParams.Death,
                 CharacterAnimationType.Magic => AnimatorParams.Magic,
@@ -121,7 +121,7 @@ namespace ElderBlood.Ecs.Character
         {
             var clipPrefix = type switch
             {
-                CharacterAnimationType.Sit => AnimatorParams.SitName,
+                CharacterAnimationType.Puddle => AnimatorParams.PuddleName,
                 CharacterAnimationType.Jump => AnimatorParams.JumpName,
                 CharacterAnimationType.Death => AnimatorParams.DeathName,
                 CharacterAnimationType.Magic => AnimatorParams.MagicName,

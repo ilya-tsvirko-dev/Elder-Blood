@@ -13,7 +13,9 @@ namespace ElderBlood.Ecs.Movement
         protected override void Initialize()
         {
             base.Initialize();
-            GetData().rigidbody = GetComponent<Rigidbody2D>();
+            ref var data = ref GetData();
+            data.rigidbody = GetComponent<Rigidbody2D>();
+            data.speedMultiplier = 1f;
         }
     }
 }

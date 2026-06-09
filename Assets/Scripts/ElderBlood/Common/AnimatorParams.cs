@@ -9,7 +9,7 @@ namespace ElderBlood.Common
         public const string IdleName = "Idle";
         public const string MoveName = "Move";
         public const string RunName = "Run";
-        public const string SitName = "Sit";
+        public const string PuddleName = "Puddle";
         public const string WakeUpName = "WakeUp";
         public const string JumpName = "Jump";
         public const string DeathName = "Death";
@@ -22,7 +22,7 @@ namespace ElderBlood.Common
         public static readonly int Idle = Animator.StringToHash(IdleName);
         public static readonly int Move = Animator.StringToHash(MoveName);
         public static readonly int Run = Animator.StringToHash(RunName);
-        public static readonly int Sit = Animator.StringToHash(SitName);
+        public static readonly int Puddle = Animator.StringToHash(PuddleName);
         public static readonly int WakeUp = Animator.StringToHash(WakeUpName);
         public static readonly int Jump = Animator.StringToHash(JumpName);
         public static readonly int Death = Animator.StringToHash(DeathName);

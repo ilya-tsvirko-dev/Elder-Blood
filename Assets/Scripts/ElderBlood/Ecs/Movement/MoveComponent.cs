@@ -19,5 +19,6 @@ namespace ElderBlood.Ecs.Movement
         [ReadOnly] public Vector2 moveVector;
         [ReadOnly] public bool isRun;
         [ReadOnly] public bool isAction;
+        [ReadOnly] public float speedMultiplier;
     }
 }

@@ -1,17 +1,26 @@
+using ElderBlood.Configs;
+using ElderBlood.Ecs.Abilities;
 using ElderBlood.Ecs.Blood;
 using ElderBlood.Ecs.Character;
-using ElderBlood.Ecs.Config;
 using ElderBlood.Ecs.Guard;
 using ElderBlood.Ecs.Health;
 using ElderBlood.Ecs.Movement;
 using Scellecs.Morpeh;
 using UnityEngine;
+using VContainer;
 
 namespace ElderBlood
 {
     public class WorldCreator : MonoBehaviour
     {
         private World _world;
+        private MainConfig _mainConfig;
+
+        [Inject]
+        public void Construct(MainConfig mainConfig)
+        {
+            _mainConfig = mainConfig;
+        }
 
         public void CreateWorld()
         {
@@ -22,12 +31,15 @@ namespace ElderBlood
             systemsGroup.AddSystem(new InputSystem());
             systemsGroup.AddSystem(new MoveSystem());
             systemsGroup.AddSystem(new CharacterAnimationSystem());
+            systemsGroup.AddSystem(new AbilitySystem(_mainConfig));
+            systemsGroup.AddSystem(new InvisibilitySystem());
+            systemsGroup.AddSystem(new BloodPuddleSystem());
+            systemsGroup.AddSystem(new BloodSightSystem());
             systemsGroup.AddSystem(new GuardVisionSystem());
             systemsGroup.AddSystem(new GuardAlertSystem());
             systemsGroup.AddSystem(new GuardBehaviorSystem());
             systemsGroup.AddSystem(new GuardAnimationSystem());
-            systemsGroup.AddSystem(new GuardSetupSystem());
-            systemsGroup.AddSystem(new ConfigSetupSystem());
+            systemsGroup.AddSystem(new GuardSetupSystem(_mainConfig));
             systemsGroup.AddSystem(new GuardPatrolSystem());
             systemsGroup.AddSystem(new DamageSystem());
             systemsGroup.AddSystem(new DrainSystem());

@@ -1,5 +1,6 @@
 using Scellecs.Morpeh.Providers;
 using Unity.IL2CPP.CompilerServices;
+using UnityEngine;
 
 namespace ElderBlood.Ecs.Blood
 {
@@ -11,7 +12,9 @@ namespace ElderBlood.Ecs.Blood
         protected override void Initialize()
         {
             base.Initialize();
-            GetData().transform = transform;
+            ref var data = ref GetData();
+            data.transform = transform;
+            data.renderer = GetComponentInChildren<SpriteRenderer>();
         }
     }
 }

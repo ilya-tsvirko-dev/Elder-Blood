@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42868e8a4fb56a34e87e812be5a892aa, type: 3}
+  m_Name: AbilityConfig
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.Configs.AbilityConfig
+  invisibilityCost: 10
+  invisibilityCooldown: 10
+  invisibilityDuration: 5
+  invisibilitySpeedMultiplier: 1.5
+  puddleCost: 20
+  puddleCooldown: 20
+  puddleRadius: 1
+  bloodSightCost: 5
+  bloodSightCooldown: 10
+  bloodSightDuration: 5
+  bloodSightRadius: 6
+  bloodSightColor: {r: 1, g: 0, b: 0, a: 1}

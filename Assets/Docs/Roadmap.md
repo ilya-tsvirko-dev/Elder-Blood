@@ -14,9 +14,8 @@
   - [x] Подключить пакет VContainer (1.18.0, git URL в `manifest.json`).
   - [x] Корневой `GameLifetimeScope : LifetimeScope` — регистрирует `MainMenuView`/`LevelManager`/`CameraController` + презентеры как entry points. `MainEntryPoint` удалён.
   - [x] **Editor-часть:** пакет подтянут; в `Main.unity` `GameLifetimeScope` повешен и ссылки проставлены; кнопка Start и камера работают.
-  - [ ] Конструировать Morpeh-системы через контейнер — **отложено**: делаем по мере появления у систем зависимостей (конфиги/сервисы, Фаза 1+); сейчас `new` в `WorldCreator` остаётся.
-  - [ ] Где упростит — заменить ручную рассылку конфигов (`ConfigSetupSystem`/`Event`) на инъекцию (вместе с переводом систем).
-  - Доп. scope на уровень/забег + регистрация сервисов (`SaveSystem`, аудио) и конфигов — по мере надобности в соответствующих фазах.
+  - [x] **Инъекция конфигов (сделано в начале Фазы 5):** `WorldCreator` получает конфиги через VContainer (`[Inject]`, `RegisterComponent`) и передаёт их в конструкторы систем. `AbilityConfig` → `AbilitySystem` (убрано поле `AbilitiesComponent.config`); `GuardConfig` → `GuardSetupSystem` (применяет один раз). Событийная рассылка конфигов удалена: `ConfigSetupSystem/Component/Provider/Event`, `GuardSetupConfigEvent`. `MainConfig.Reset` (live-tuning) теперь инертна.
+  - Системы по-прежнему `new`-аются в `WorldCreator`, но получают зависимости-конфиги через инъекцию в `WorldCreator`. Доп. сервисы (`SaveSystem`, аудио) регистрируются по мере надобности.
 - [x] Централизовать магические строки → `Common/AnimatorParams.cs`, `Common/ShaderIds.cs`, `Common/Layers.cs`. Переведены `CharacterAnimationSystem`, `GuardAnimationSystem`, `HealthShaderSystem`, `GuardTriggerSystem`.
 - [x] Удалён мёртвый `Guard/GuardAnimation.cs` (MonoBehaviour, легаси до ECS, заменён `GuardAnimationSystem`).
 - [~] ~~Удалить мёртвый NavMesh игрока~~ — **отменено**: `MoveNavMeshComponent`/`MoveNavMeshProvider` используются охранниками (`GuardBehaviorSystem` + `Guard.prefab`), это не мёртвый код.
@@ -104,6 +103,21 @@ Return     → Patrol      : дошёл до маршрута
 ## Фаза 4 — Способности
 Общий каркас (стоимость в крови = мана, кулдауны). Первые три: Невидимость (+скорость, враги теряют из вида), Кровавая лужа-капкан (движение = отмена; жертва наступила = смерть + кровь; не работает, если видели при превращении), Кровавое зрение (подсветка крови в радиусе, дальность качается).
 
+**Разбито на 4a (каркас+Невидимость), 4b (Лужа), 4c (Зрение).**
+
+**4a — код готов, ждёт editor-части.** `Configs/AbilityConfig` (SO), `Ecs/Abilities/`: `AbilityType`, `AbilityCastEvent`, `AbilitiesComponent`(+Provider), `InvisibilityActiveComponent`, `AbilitySystem`, `InvisibilitySystem`. Буст скорости через новое `MoveComponent.speedMultiplier` (MoveProvider→1, MoveSystem умножает). Скрытие от стражи: `GuardVisionSystem` через `EntityProvider` проверяет `InvisibilityActiveComponent` у цели → «не видно». `InputSystem`: `Invisibility`→`AbilityCastEvent`. `WorldCreator`: +AbilitySystem,+InvisibilitySystem.
+**Editor-часть:** добавить input-экшен `Invisibility` (напр. клавиша 1); создать ассет `AbilityConfig` (cost/cooldown/duration/speedMult); на игрока добавить `AbilitiesProvider` с этим конфигом.
+- Ручной `Fade` из `InputSystem` удалён (рудимент — невидимость владеет `isFaded`); action `Fade` в Controls можно убрать.
+
+**4b (Лужа) — код готов, ждёт editor-части.** `BloodPuddleActiveComponent`, `BloodPuddleSystem`; `AbilityConfig`+`AbilitiesComponent` получили puddle-поля; `AbilitySystem.TryBloodPuddle` (каст если ни один страж не aware); `InputSystem`: `BloodPuddle`→cast; `WorldCreator`: +BloodPuddleSystem. Логика: каст → игрок замирает «лужей» в точке; движение → отмена; `BloodSource` в радиусе → слив его `amount` + уничтожение источника, лужа расходуется. **Визуал лужи (свап спрайта) отложен; «кто наступит» упрощено до «любой источник в радиусе»; лужа не прячет от стражи.**
+**Editor-часть:** input-экшен `BloodPuddle` (напр. 2); задать puddle-поля в `AbilityConfig`; для жертвы-стража — `BloodSourceProvider` на префаб `Guard`.
+- Выход из лужи переделан на **тоггл** (повторное нажатие `2` → `WakeUp`); движение не отменяет. Sit полностью переименован в Puddle (enum/AnimatorParams/триггер аниматора), ручной Sit (Ctrl) убран.
+
+**4c (Кровавое зрение) — код готов, ждёт editor-части.** `BloodSightActiveComponent`, `BloodSightSystem`; `AbilityConfig`/`AbilitiesComponent` + bloodSight-поля; `BloodSourceComponent` получил `renderer`+highlight-поля; `AbilitySystem.TryBloodSight`; `InputSystem`: `BloodSight`→cast; `WorldCreator`: +BloodSightSystem. Импульс на `duration`: тинт `SpriteRenderer` источников в радиусе, возврат при выходе/истечении.
+**Editor-часть:** input-экшен `BloodSight` (напр. 3); bloodSight-поля в `AbilityConfig`; подсветка видна только у источников со `SpriteRenderer`.
+
+**Фаза 4 завершена** (4a Невидимость, 4b Лужа, 4c Кровавое зрение).
+
 **Объём v1 (зафиксирован):**
 - **Гибридный каркас:** `AbilityConfig` (SO — на способность: `cost`, `cooldown`, `duration`, параметры) + `AbilitiesComponent` (слоты + кулдауны) + **тег-компоненты активных состояний** (`InvisibilityActiveComponent`, `BloodPuddleComponent`).
 - **Ввод — отдельная клавиша на способность.**
@@ -126,7 +140,7 @@ Return     → Patrol      : дошёл до маршрута
 - **Валюта — живой пул крови:** тратишь текущую кровь (= жизнь/мана). Это и есть задуманное напряжение единого ресурса.
 - **Бог Крови — хаб между этажами.**
 - **Трактовка:** кровь — расходник в пределах забега (набираешь сливом каждый забег); купленные на неё апгрейды — постоянные.
-- **Щит открывается здесь** (отложен из Фазы 3).
+- **Щит открывается здесь** (отложен из Фазы 3). **5a сделано:** `ShieldComponent`(+Provider), `DamageSystem` поглощает урон щитом перед кровью (если `unlocked`). Не саморегенится. Editor: `ShieldProvider` на игрока (для теста `unlocked=true`, `max`); реальная разблокировка — вендор 5c.
 - **Бэкенд сохранений — здесь** (JSON в `persistentDataPath`, персистит `PlayerProgress` + `VillageState` Фазы 6). В Фазе 8 — только UI настроек/слотов.
 
 **Новые элементы:**

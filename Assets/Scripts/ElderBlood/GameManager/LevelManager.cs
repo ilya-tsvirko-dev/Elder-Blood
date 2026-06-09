@@ -1,22 +1,32 @@
 using System;
 using System.Collections;
+using ElderBlood.Configs;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using VContainer;
 
 namespace ElderBlood
 {
     public class LevelManager : MonoBehaviour
     {
-        [SerializeField] private LevelContainer _levelContainer;
-        [SerializeField] private AssetReference _playerPrefab;
         [SerializeField] private WorldCreator _worldCreator;
         [SerializeField] private Transform _levelsParent;
 
         public event Action<Transform> PlayerSpawned;
 
+        private LevelContainer _levelContainer;
+        private AssetReference _playerPrefab;
+
         private GameObject _currentLevel;
         private GameObject _currentPlayer;
         private int _currentIndex = -1;
+
+        [Inject]
+        public void Construct(MainConfig config)
+        {
+            _levelContainer = config.LevelContainer;
+            _playerPrefab = config.CharacterConfig.playerPrefab;
+        }
 
         public void LoadFirstLevel()
         {

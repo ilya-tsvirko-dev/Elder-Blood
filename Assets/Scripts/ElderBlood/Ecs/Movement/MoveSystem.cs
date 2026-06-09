@@ -39,7 +39,7 @@ namespace ElderBlood.Ecs.Movement
                     continue;
                 }
                 
-                var speed = moveComponent.isRun ? moveComponent.runSpeed : moveComponent.speed;
+                var speed = (moveComponent.isRun ? moveComponent.runSpeed : moveComponent.speed) * moveComponent.speedMultiplier;
                 var vector = moveComponent.moveVector * (deltaTime * speed);
                 moveComponent.rigidbody.linearVelocity = vector;
             }

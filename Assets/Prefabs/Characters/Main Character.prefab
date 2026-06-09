@@ -19,6 +19,8 @@ GameObject:
   - component: {fileID: 2127696675499487805}
   - component: {fileID: 7534821196060140425}
   - component: {fileID: 4725350796156359380}
+  - component: {fileID: 6347363827012666571}
+  - component: {fileID: -3506602107362186657}
   m_Layer: 6
   m_Name: Main Character
   m_TagString: Untagged
@@ -259,6 +261,7 @@ MonoBehaviour:
     moveVector: {x: 0, y: 0}
     isRun: 0
     isAction: 0
+    speedMultiplier: 0
 --- !u!114 &7534821196060140425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293,4 +296,36 @@ MonoBehaviour:
   serializedData:
     capacity: 100
     drainRadius: 3
+    current: 0
+--- !u!114 &6347363827012666571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264626752388166439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e38681838b90b68428bb53714104026d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.Ecs.Abilities.AbilitiesProvider
+  serializedData:
+    invisibilityCooldown: 0
+    puddleCooldown: 0
+    bloodSightCooldown: 0
+--- !u!114 &-3506602107362186657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 264626752388166439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc2e7fbd19bfb0e4391b14d69dd7c24f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.Ecs.Blood.ShieldProvider
+  serializedData:
+    max: 100
+    unlocked: 1
     current: 0

@@ -1,6 +1,7 @@
+using ElderBlood.Configs;
+using ElderBlood.Configs.Guard;
 using ElderBlood.Ecs.Health;
 using Scellecs.Morpeh;
-using Scellecs.Morpeh.Collections;
 using Unity.IL2CPP.CompilerServices;
 
 namespace ElderBlood.Ecs.Guard
@@ -10,37 +11,43 @@ namespace ElderBlood.Ecs.Guard
     [Il2CppSetOption(Option.DivideByZeroChecks, false)]
     public sealed class GuardSetupSystem : ISystem
     {
+        private readonly GuardConfig _config;
+
         private Filter _filter;
         private Stash<HealthComponent> _stash;
-        
-        private Event<GuardSetupConfigEvent> _setupEvents;
-        
+        private bool _applied;
+
         public World World { get; set; }
-        
+
+        public GuardSetupSystem(MainConfig config)
+        {
+            _config = config.GuardConfig;
+        }
+
         public void OnAwake()
         {
             _filter = World.Filter.With<HealthComponent>().With<GuardComponent>().Build();
             _stash = World.GetStash<HealthComponent>();
-
-            _setupEvents = World.GetEvent<GuardSetupConfigEvent>();
-            _setupEvents.Subscribe(Setup);
         }
-        
-        public void OnUpdate(float deltaTime) { }
-        public void Dispose() { }
 
-        private void Setup(FastList<GuardSetupConfigEvent> eventHolders)
+        public void OnUpdate(float deltaTime)
         {
-            foreach (var eventHolder in eventHolders)
+            if (_applied)
             {
-                foreach (var entity in _filter)
-                {
-                    ref var component = ref _stash.Get(entity);
-
-                    component.maxHealthPoint = eventHolder.Config.MaxHealth;
-                    component.healthPoint = eventHolder.Config.MaxHealth;
-                }
+                return;
             }
+
+            foreach (var entity in _filter)
+            {
+                ref var component = ref _stash.Get(entity);
+                component.maxHealthPoint = _config.MaxHealth;
+                component.healthPoint = _config.MaxHealth;
+                _applied = true;
+            }
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

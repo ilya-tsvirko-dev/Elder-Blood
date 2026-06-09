@@ -1,6 +1,8 @@
 using ElderBlood.Common;
+using ElderBlood.Ecs.Abilities;
 using ElderBlood.Ecs.Movement;
 using Scellecs.Morpeh;
+using Scellecs.Morpeh.Providers;
 using Unity.IL2CPP.CompilerServices;
 using UnityEngine;
 
@@ -18,6 +20,7 @@ namespace ElderBlood.Ecs.Guard
         private Stash<GuardPerceptionComponent> _perceptionStash;
         private Stash<GuardBehaviorComponent> _behaviorStash;
         private Stash<MoveComponent> _moveStash;
+        private Stash<InvisibilityActiveComponent> _invisibilityStash;
 
         public void OnAwake()
         {
@@ -27,6 +30,7 @@ namespace ElderBlood.Ecs.Guard
             _perceptionStash = World.GetStash<GuardPerceptionComponent>();
             _behaviorStash = World.GetStash<GuardBehaviorComponent>();
             _moveStash = World.GetStash<MoveComponent>();
+            _invisibilityStash = World.GetStash<InvisibilityActiveComponent>();
         }
 
         public void OnUpdate(float deltaTime)
@@ -50,7 +54,7 @@ namespace ElderBlood.Ecs.Guard
                 var visible = false;
 
                 var candidate = Physics2D.OverlapCircle(origin, vision.viewRadius, Layers.CharacterMask);
-                if (candidate != null)
+                if (candidate != null && !IsInvisible(candidate))
                 {
                     Vector2 toTarget = (Vector2)candidate.transform.position - origin;
                     var dist = toTarget.magnitude;
@@ -99,6 +103,13 @@ namespace ElderBlood.Ecs.Guard
 
         public void Dispose()
         {
+        }
+
+        // Invisible targets (Invisibility ability) are not seen: guards lose track and awareness decays.
+        private bool IsInvisible(Collider2D candidate)
+        {
+            var provider = candidate.GetComponent<EntityProvider>();
+            return provider != null && !provider.Entity.IsNullOrDisposed() && _invisibilityStash.Has(provider.Entity);
         }
 
         private static void DrawDebug(Vector2 origin, GuardVisionComponent vision, PerceptionState state)

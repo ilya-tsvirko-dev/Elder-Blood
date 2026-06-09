@@ -1,10 +1,12 @@
 using Scellecs.Morpeh.Providers;
 using Unity.IL2CPP.CompilerServices;
 
-namespace ElderBlood.Ecs.Config
+namespace ElderBlood.Ecs.Abilities
 {
     [Il2CppSetOption(Option.NullChecks, false)]
     [Il2CppSetOption(Option.ArrayBoundsChecks, false)]
     [Il2CppSetOption(Option.DivideByZeroChecks, false)]
-    public class ConfigSetupProvider : MonoProvider<ConfigSetupComponent> { }
+    public sealed class AbilitiesProvider : MonoProvider<AbilitiesComponent>
+    {
+    }
 }

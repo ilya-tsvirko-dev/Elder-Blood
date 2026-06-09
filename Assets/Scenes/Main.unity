@@ -170,6 +170,8 @@ MonoBehaviour:
   _menuView: {fileID: 1676516541}
   _levelManager: {fileID: 126923705}
   _camera: {fileID: 527788965}
+  _worldCreator: {fileID: 126923704}
+  _mainConfig: {fileID: 11400000, guid: 689ac5a3e2fd5ad4cac7c28b2157dd7b, type: 2}
 --- !u!1 &126923703
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,13 +214,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1e9e44834004cd4a84f98a733694cff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.GameManager
-  _levelContainer: {fileID: 11400000, guid: d8cf196b170881f40a2393e86fd3f392, type: 2}
-  _playerPrefab:
-    m_AssetGUID: 49a1878817ca2f94391b552349bf5c67
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_SubObjectGUID: 
-    m_EditorAssetChanged: 1
   _worldCreator: {fileID: 126923704}
   _levelsParent: {fileID: 526083871}
 --- !u!4 &126923706
@@ -228,52 +223,6 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126923703}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &397837447
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 397837449}
-  - component: {fileID: 397837448}
-  m_Layer: 0
-  m_Name: ConfigProvider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &397837448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397837447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a097cf7e825346e4b089b1e446ca4cc3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.Configs.ConfigSetupProvider
-  serializedData:
-    config: {fileID: 11400000, guid: 689ac5a3e2fd5ad4cac7c28b2157dd7b, type: 2}
---- !u!4 &397837449
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397837447}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -552,7 +501,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1782753673
-  m_SortingLayer: 5
+  m_SortingLayer: 6
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Positions:
@@ -1119,7 +1068,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 255
+    m_Bits: 247
 --- !u!114 &1939036777
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1172,7 +1121,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 126923706}
   - {fileID: 19002980}
-  - {fileID: 397837449}
   - {fileID: 1352256568}
   - {fileID: 1302546313}
   - {fileID: 1626961533}

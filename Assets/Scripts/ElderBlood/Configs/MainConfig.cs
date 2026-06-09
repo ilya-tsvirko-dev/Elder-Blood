@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using ElderBlood.Configs.Guard;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace ElderBlood.Configs
@@ -10,13 +7,8 @@ namespace ElderBlood.Configs
     public class MainConfig : ScriptableObject
     {
         public GuardConfig GuardConfig;
-        
-        public event Action OnReset;
-        
-        [Button]
-        public void Reset()
-        {
-            OnReset?.Invoke();
-        }
+        public AbilityConfig AbilityConfig;
+        public LevelContainer LevelContainer;
+        public CharacterConfig CharacterConfig;
     }
 }

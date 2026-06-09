@@ -147,18 +147,36 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Fade"",
+                    ""name"": ""Interact"",
                     ""type"": ""Button"",
-                    ""id"": ""2c9b3316-df6a-4b73-96e3-bb965efd971f"",
+                    ""id"": ""00288cc5-f228-4e6a-b986-4b54677a0dfc"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Interact"",
+                    ""name"": ""Invisibility"",
                     ""type"": ""Button"",
-                    ""id"": ""00288cc5-f228-4e6a-b986-4b54677a0dfc"",
+                    ""id"": ""a10529e2-043d-475e-96eb-a587310460df"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BloodPuddle"",
+                    ""type"": ""Button"",
+                    ""id"": ""e680a01d-cc96-4104-ae3f-dee8c63f800f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""BloodSight"",
+                    ""type"": ""Button"",
+                    ""id"": ""928791fb-078f-42ba-8316-6f1c2ab3774f"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -278,23 +296,45 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""3394ed0f-6f0f-4fd4-ab13-6b3b0648d7a8"",
-                    ""path"": ""<Keyboard>/tab"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Fade"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""a803b761-e8c3-448d-b234-2fcf6bcba47d"",
                     ""path"": ""<Keyboard>/f"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""370baa2d-04ea-46ec-9f01-4dbdcbf35bb0"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Invisibility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0b0d29d7-e8ae-4754-b6ea-dc4be8a4c087"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BloodPuddle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""84f58eb4-0963-485b-a606-431f727fc79b"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""BloodSight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -328,8 +368,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Main_Jump = m_Main.FindAction("Jump", throwIfNotFound: true);
         m_Main_Hide = m_Main.FindAction("Hide", throwIfNotFound: true);
         m_Main_Magic = m_Main.FindAction("Magic", throwIfNotFound: true);
-        m_Main_Fade = m_Main.FindAction("Fade", throwIfNotFound: true);
         m_Main_Interact = m_Main.FindAction("Interact", throwIfNotFound: true);
+        m_Main_Invisibility = m_Main.FindAction("Invisibility", throwIfNotFound: true);
+        m_Main_BloodPuddle = m_Main.FindAction("BloodPuddle", throwIfNotFound: true);
+        m_Main_BloodSight = m_Main.FindAction("BloodSight", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -416,8 +458,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_Jump;
     private readonly InputAction m_Main_Hide;
     private readonly InputAction m_Main_Magic;
-    private readonly InputAction m_Main_Fade;
     private readonly InputAction m_Main_Interact;
+    private readonly InputAction m_Main_Invisibility;
+    private readonly InputAction m_Main_BloodPuddle;
+    private readonly InputAction m_Main_BloodSight;
     /// <summary>
     /// Provides access to input actions defined in input action map "Main".
     /// </summary>
@@ -454,13 +498,21 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Magic => m_Wrapper.m_Main_Magic;
         /// <summary>
-        /// Provides access to the underlying input action "Main/Fade".
-        /// </summary>
-        public InputAction @Fade => m_Wrapper.m_Main_Fade;
-        /// <summary>
         /// Provides access to the underlying input action "Main/Interact".
         /// </summary>
         public InputAction @Interact => m_Wrapper.m_Main_Interact;
+        /// <summary>
+        /// Provides access to the underlying input action "Main/Invisibility".
+        /// </summary>
+        public InputAction @Invisibility => m_Wrapper.m_Main_Invisibility;
+        /// <summary>
+        /// Provides access to the underlying input action "Main/BloodPuddle".
+        /// </summary>
+        public InputAction @BloodPuddle => m_Wrapper.m_Main_BloodPuddle;
+        /// <summary>
+        /// Provides access to the underlying input action "Main/BloodSight".
+        /// </summary>
+        public InputAction @BloodSight => m_Wrapper.m_Main_BloodSight;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -505,12 +557,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Magic.started += instance.OnMagic;
             @Magic.performed += instance.OnMagic;
             @Magic.canceled += instance.OnMagic;
-            @Fade.started += instance.OnFade;
-            @Fade.performed += instance.OnFade;
-            @Fade.canceled += instance.OnFade;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @Invisibility.started += instance.OnInvisibility;
+            @Invisibility.performed += instance.OnInvisibility;
+            @Invisibility.canceled += instance.OnInvisibility;
+            @BloodPuddle.started += instance.OnBloodPuddle;
+            @BloodPuddle.performed += instance.OnBloodPuddle;
+            @BloodPuddle.canceled += instance.OnBloodPuddle;
+            @BloodSight.started += instance.OnBloodSight;
+            @BloodSight.performed += instance.OnBloodSight;
+            @BloodSight.canceled += instance.OnBloodSight;
         }
 
         /// <summary>
@@ -540,12 +598,18 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Magic.started -= instance.OnMagic;
             @Magic.performed -= instance.OnMagic;
             @Magic.canceled -= instance.OnMagic;
-            @Fade.started -= instance.OnFade;
-            @Fade.performed -= instance.OnFade;
-            @Fade.canceled -= instance.OnFade;
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @Invisibility.started -= instance.OnInvisibility;
+            @Invisibility.performed -= instance.OnInvisibility;
+            @Invisibility.canceled -= instance.OnInvisibility;
+            @BloodPuddle.started -= instance.OnBloodPuddle;
+            @BloodPuddle.performed -= instance.OnBloodPuddle;
+            @BloodPuddle.canceled -= instance.OnBloodPuddle;
+            @BloodSight.started -= instance.OnBloodSight;
+            @BloodSight.performed -= instance.OnBloodSight;
+            @BloodSight.canceled -= instance.OnBloodSight;
         }
 
         /// <summary>
@@ -642,18 +706,32 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMagic(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Fade" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnFade(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInteract(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Invisibility" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnInvisibility(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "BloodPuddle" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBloodPuddle(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "BloodSight" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBloodSight(InputAction.CallbackContext context);
     }
 }

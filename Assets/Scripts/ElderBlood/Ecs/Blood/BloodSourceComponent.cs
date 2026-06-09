@@ -11,6 +11,11 @@ namespace ElderBlood.Ecs.Blood
     public struct BloodSourceComponent : IComponent
     {
         public Transform transform;
+        public SpriteRenderer renderer;
         public float amount;
+
+        // Runtime highlight state (Blood Sight).
+        public bool highlighted;
+        public Color baseColor;
     }
 }
