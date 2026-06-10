@@ -7,6 +7,7 @@ using ElderBlood.Ecs.Movement;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Collections;
 using Unity.IL2CPP.CompilerServices;
+using UnityEngine;
 
 namespace ElderBlood.Ecs.Abilities
 {
@@ -114,12 +115,14 @@ namespace ElderBlood.Ecs.Abilities
 
             if (abilities.invisibilityCooldown > 0f || _invisibilityStash.Has(entity))
             {
+                Debug.Log($"[Ability] Invisibility blocked: cooldown {abilities.invisibilityCooldown:0.#}s / active {_invisibilityStash.Has(entity)}");
                 return;
             }
 
             ref var blood = ref _bloodStash.Get(entity);
             if (blood.current < config.invisibilityCost)
             {
+                Debug.Log($"[Ability] Invisibility denied: need {config.invisibilityCost} blood, have {blood.current:0.#}");
                 return;
             }
 
@@ -129,6 +132,8 @@ namespace ElderBlood.Ecs.Abilities
             _invisibilityStash.Set(entity, new InvisibilityActiveComponent { timer = config.invisibilityDuration });
             _moveStash.Get(entity).speedMultiplier = config.invisibilitySpeedMultiplier;
             _shaderStash.Get(entity).isFaded = true;
+
+            Debug.Log($"[Ability] Invisibility cast: -{config.invisibilityCost} blood → {blood.current:0.#} left");
         }
 
         private void TryBloodPuddle(Entity entity)
@@ -138,6 +143,7 @@ namespace ElderBlood.Ecs.Abilities
             {
                 _puddleStash.Remove(entity);
                 _animStash.Get(entity).type = CharacterAnimationType.WakeUp;
+                Debug.Log("[Ability] BloodPuddle: wake up (toggle off)");
                 return;
             }
 
@@ -146,18 +152,21 @@ namespace ElderBlood.Ecs.Abilities
 
             if (abilities.puddleCooldown > 0f)
             {
+                Debug.Log($"[Ability] BloodPuddle blocked: cooldown {abilities.puddleCooldown:0.#}s");
                 return;
             }
 
             ref var blood = ref _bloodStash.Get(entity);
             if (blood.current < config.puddleCost)
             {
+                Debug.Log($"[Ability] BloodPuddle denied: need {config.puddleCost} blood, have {blood.current:0.#}");
                 return;
             }
 
             // Does not work if any guard is currently aware of the player.
             if (AnyGuardAware())
             {
+                Debug.Log("[Ability] BloodPuddle denied: a guard is aware of the player");
                 return;
             }
 
@@ -174,6 +183,8 @@ namespace ElderBlood.Ecs.Abilities
                 radius = config.puddleRadius
             });
             _animStash.Get(entity).type = CharacterAnimationType.Puddle;
+
+            Debug.Log($"[Ability] BloodPuddle cast: -{config.puddleCost} blood → {blood.current:0.#} left");
         }
 
         private void TryBloodSight(Entity entity)
@@ -183,12 +194,14 @@ namespace ElderBlood.Ecs.Abilities
 
             if (abilities.bloodSightCooldown > 0f || _bloodSightStash.Has(entity))
             {
+                Debug.Log($"[Ability] BloodSight blocked: cooldown {abilities.bloodSightCooldown:0.#}s / active {_bloodSightStash.Has(entity)}");
                 return;
             }
 
             ref var blood = ref _bloodStash.Get(entity);
             if (blood.current < config.bloodSightCost)
             {
+                Debug.Log($"[Ability] BloodSight denied: need {config.bloodSightCost} blood, have {blood.current:0.#}");
                 return;
             }
 
@@ -201,6 +214,8 @@ namespace ElderBlood.Ecs.Abilities
                 radius = config.bloodSightRadius,
                 color = config.bloodSightColor
             });
+
+            Debug.Log($"[Ability] BloodSight cast: -{config.bloodSightCost} blood → {blood.current:0.#} left");
         }
 
         private bool AnyGuardAware()

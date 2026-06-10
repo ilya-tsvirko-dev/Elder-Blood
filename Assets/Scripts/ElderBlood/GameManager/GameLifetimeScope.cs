@@ -1,4 +1,5 @@
 using ElderBlood.Configs;
+using ElderBlood.Save;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -21,6 +22,8 @@ namespace ElderBlood
             builder.RegisterComponent(_worldCreator);
 
             builder.RegisterInstance(_mainConfig);
+
+            builder.Register<SaveService>(Lifetime.Singleton);
 
             builder.RegisterEntryPoint<MainMenuPresenter>();
             builder.RegisterEntryPoint<CameraPresenter>();

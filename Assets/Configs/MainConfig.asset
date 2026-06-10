@@ -16,3 +16,4 @@ MonoBehaviour:
   AbilityConfig: {fileID: 11400000, guid: b009ba758a9a7ad4f9527b56ec2f8421, type: 2}
   LevelContainer: {fileID: 11400000, guid: d8cf196b170881f40a2393e86fd3f392, type: 2}
   CharacterConfig: {fileID: 11400000, guid: 4ac884a63ba59954e8e31e459b7b6b5a, type: 2}
+  UpgradeConfig: {fileID: 11400000, guid: 3a616ea0751cdbb4da8c53b69ea8b61f, type: 2}

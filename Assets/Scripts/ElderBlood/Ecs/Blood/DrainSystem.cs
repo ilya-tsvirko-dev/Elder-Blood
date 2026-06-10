@@ -20,6 +20,7 @@ namespace ElderBlood.Ecs.Blood
         private Stash<BloodSourceComponent> _sourceStash;
 
         private Event<DrainEvent> _drainEvent;
+        private Event<SourceDrainedEvent> _drainedEvent;
 
         public void OnAwake()
         {
@@ -30,6 +31,7 @@ namespace ElderBlood.Ecs.Blood
             _sourceStash = World.GetStash<BloodSourceComponent>();
 
             _drainEvent = World.GetEvent<DrainEvent>();
+            _drainedEvent = World.GetEvent<SourceDrainedEvent>();
             _drainEvent.Subscribe(OnDrain);
         }
 
@@ -50,6 +52,7 @@ namespace ElderBlood.Ecs.Blood
                     ref var blood = ref _bloodStash.Get(player);
                     if (blood.current >= blood.capacity)
                     {
+                        Debug.Log($"[Drain] Blocked: pool full ({blood.current:0.#}/{blood.capacity:0.#})");
                         continue; // pool full → drain blocked
                     }
 
@@ -63,9 +66,9 @@ namespace ElderBlood.Ecs.Blood
                     foreach (var sourceEntity in _sourceFilter)
                     {
                         ref var source = ref _sourceStash.Get(sourceEntity);
-                        if (source.amount <= 0f)
+                        if (source.amount <= 0f || source.state == SourceState.Awake)
                         {
-                            continue;
+                            continue; // depleted, or woken (no longer easy prey)
                         }
 
                         var sqr = ((Vector2)source.transform.position - playerPos).sqrMagnitude;
@@ -79,6 +82,7 @@ namespace ElderBlood.Ecs.Blood
 
                     if (!found)
                     {
+                        Debug.Log($"[Drain] No source within radius {blood.drainRadius:0.#}");
                         continue;
                     }
 
@@ -86,6 +90,10 @@ namespace ElderBlood.Ecs.Blood
                     var transfer = Mathf.Min(nearestSource.amount, blood.capacity - blood.current);
                     blood.current += transfer;
                     nearestSource.amount -= transfer;
+
+                    _drainedEvent.NextFrame(new SourceDrainedEvent { amount = transfer });
+
+                    Debug.Log($"[Drain] +{transfer:0.#} blood → {blood.current:0.#}/{blood.capacity:0.#}. Source left {nearestSource.amount:0.#}");
                 }
             }
         }

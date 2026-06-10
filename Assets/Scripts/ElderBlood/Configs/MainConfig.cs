@@ -10,5 +10,7 @@ namespace ElderBlood.Configs
         public AbilityConfig AbilityConfig;
         public LevelContainer LevelContainer;
         public CharacterConfig CharacterConfig;
+        public UpgradeConfig UpgradeConfig;
+        public VillageConfig VillageConfig;
     }
 }

@@ -1,6 +1,7 @@
 using ElderBlood.Ecs.Abilities;
 using ElderBlood.Ecs.Blood;
 using ElderBlood.Ecs.Movement;
+using ElderBlood.Ecs.Progression;
 using Scellecs.Morpeh;
 using Unity.IL2CPP.CompilerServices;
 using UnityEngine;
@@ -22,6 +23,7 @@ namespace ElderBlood.Ecs.Character
         private Controls _controls;
         private Event<DrainEvent> _drainEvent;
         private Event<AbilityCastEvent> _castEvent;
+        private Event<UpgradeEvent> _upgradeEvent;
 
         public void OnAwake() 
         {
@@ -32,6 +34,7 @@ namespace ElderBlood.Ecs.Character
 
             _drainEvent = World.GetEvent<DrainEvent>();
             _castEvent = World.GetEvent<AbilityCastEvent>();
+            _upgradeEvent = World.GetEvent<UpgradeEvent>();
 
             _controls = new Controls();
             _controls.Enable();
@@ -46,9 +49,11 @@ namespace ElderBlood.Ecs.Character
             _controls.Main.Invisibility.performed += OnInvisibility;
             _controls.Main.BloodPuddle.performed += OnBloodPuddle;
             _controls.Main.BloodSight.performed += OnBloodSight;
+            _controls.Main.Upgrade.performed += OnUpgrade;
         }
 
         private void Interact(InputAction.CallbackContext obj) => _drainEvent.NextFrame(new DrainEvent());
+        private void OnUpgrade(InputAction.CallbackContext obj) => _upgradeEvent.NextFrame(new UpgradeEvent());
         private void OnInvisibility(InputAction.CallbackContext obj) => _castEvent.NextFrame(new AbilityCastEvent { type = AbilityType.Invisibility });
         private void OnBloodPuddle(InputAction.CallbackContext obj) => _castEvent.NextFrame(new AbilityCastEvent { type = AbilityType.BloodPuddle });
         private void OnBloodSight(InputAction.CallbackContext obj) => _castEvent.NextFrame(new AbilityCastEvent { type = AbilityType.BloodSight });

@@ -7,10 +7,11 @@
 
 ## Технологии
 - **Morpeh ECS** — вся игровая логика
+- **VContainer** — DI (composition root `GameLifetimeScope`)
 - **Unity AI Navigation (NavMesh)** — движение охранников
 - **Cinemachine** — камера
 - **Unity Input System** (новый) — ввод игрока
-- **Addressables** — загрузка ассетов
+- **Addressables** — загрузка ассетов (уровни + игрок)
 - **URP** — рендер
 - **2D**: Tilemap, SpriteShape, Aseprite, PixelPerfect
 
@@ -18,40 +19,45 @@
 
 ## Структура проекта
 
+**Разделение:** ECS-код — в `Scripts/ElderBlood/Ecs/<Domain>/` под неймспейсами `ElderBlood.Ecs.<Domain>`. Unity-слой (`GameManager`, `UI`, `Camera`, `Bootstrap`), сервисы (`Save`), SO-конфиги (`Configs`) и константы (`Common`) — в `ElderBlood.*`.
+
 ```
 Assets/
 ├── Scripts/ElderBlood/
-│   ├── WorldCreator.cs             — инициализация ECS World, регистрация систем (CreateWorld())
+│   ├── WorldCreator.cs             — строит ECS-систем-группу ОДИН раз (CreateWorld(), флаг _created)
 │   ├── Bootstrap/BootstrapEntryPoint.cs — стартовая сцена → грузит Main
 │   ├── GameManager/
-│   │   ├── LevelManager.cs         — singleton, загрузка уровней через Addressables, спавн игрока
-│   │   └── LevelBootstrap.cs       — точка спавна игрока на уровне (PlayerSpawnPoint)
-│   ├── UI/MainMenuUI.cs            — главное меню, кнопка Start → LevelManager.LoadLevel
-│   ├── Camera/                     — CameraController (MonoBehaviour, не ECS)
-│   ├── Character/
-│   │   ├── Input/                  — InputComponent/System/Provider
-│   │   └── Animation/              — CharacterAnimationComponent/System/Provider
-│   ├── Guard/
-│   │   ├── GuardComponent/Provider — маркер охранника
-│   │   ├── GuardTriggerComponent/System — обнаружение игрока (OverlapCircle)
-│   │   ├── GuardBehavior/          — NavMesh-преследование цели / движение к patrolPoint
-│   │   ├── GuardPatrol/            — патрулирование по точкам с ожиданием
-│   │   └── Animation/              — анимация охранника
-│   ├── Common/Enums/               — MoveAnimationType
-│   └── Configs/
-│       ├── MainConfig.cs           — ScriptableObject, ссылка на GuardConfig
-│       ├── ConfigSetupComponent/Provider — носитель конфига
-│       └── Guard/GuardConfig.cs    — MaxHealth охранника
+│   │   ├── GameLifetimeScope.cs    — VContainer root (регистрирует View/LevelManager/Camera/WorldCreator/SaveService + презентеры)
+│   │   ├── LevelManager.cs         — петля забега: StartRun/AdvanceFloor/RestartRun/WinRun; ОДИН игрок на забег
+│   │   └── LevelBootstrap.cs       — точка спавна игрока на этаже (PlayerSpawnPoint)
+│   ├── UI/                         — MainMenuView + MainMenuPresenter (MVP)
+│   ├── Camera/                     — CameraController + CameraPresenter (не ECS)
+│   ├── Save/                       — SaveService (JSON в persistentDataPath), PlayerProgressData, VillageStateData
+│   ├── Common/                     — AnimatorParams, ShaderIds, Layers
+│   ├── Configs/                    — MainConfig (ссылки на все SO), AbilityConfig, CharacterConfig, UpgradeConfig, VillageConfig, Guard/GuardConfig, Levels/LevelContainer
+│   └── Ecs/
+│       ├── Character/              — Input/, Animation/ (компоненты+системы+провайдеры)
+│       ├── Movement/               — Move*, MoveNavMesh* (NavMesh используется стражей)
+│       ├── Health/                 — Health*, HealthShader*
+│       ├── Blood/                  — Blood/BloodSource/Shield, Damage/Drain (системы+события), SourceState
+│       ├── Abilities/              — AbilitiesComponent/System, Invisibility/BloodPuddle/BloodSight, AbilityType, AbilityCastEvent
+│       ├── Guard/                  — Component/Provider, GuardConfiguredComponent (тег), Behavior/, Patrol/, Vision/, Alert/, Animation/
+│       ├── Progression/            — PlayerProgress*, GodOfBlood*, Upgrade* (вендор)
+│       ├── Village/                — VillageState/Reaction (ОТКЛЮЧЕНО в WorldCreator, ждёт переделки)
+│       └── Level/                  — Exit*, ObjectiveSystem (цель этажа + переходы)
 ├── Configs/                        — .asset файлы конфигов
+├── Controls/Controls.cs           — сгенерённый Input System (Move/Run/Interact/Invisibility/BloodPuddle/BloodSight/Upgrade)
 ├── Scenes/Bootstrap.unity, Main.unity — две сцены (Bootstrap → Main); уровни = Addressable-префабы
 ├── Prefabs/Characters/, Enemy/, Levels/
 └── Sprites/, Tilemaps/, Animation/
 ```
 
-### Поток загрузки
+### Поток загрузки / петля забега
 1. `Bootstrap.unity` → `BootstrapEntryPoint` грузит сцену `Main`
-2. `Main.unity`: `MainMenuUI` (кнопка Start) + `LevelManager` (singleton, DontDestroyOnLoad)
-3. Start → `LevelManager.LoadLevel(levelRef)` → Addressables-инстанс уровня → `LevelBootstrap.PlayerSpawnPoint` → спавн игрока (Addressables) → `WorldCreator.CreateWorld()`
+2. `Main.unity`: `GameLifetimeScope` (VContainer) собирает зависимости; `MainMenuView` (кнопка Start) + `LevelManager`
+3. Start → `MainMenuPresenter` → `LevelManager.StartRun()`: `WorldCreator.CreateWorld()` (один раз) → спавн игрока (Addressables, ОДИН на забег) → `LoadFloor(0)`
+4. Игрок дошёл до выхода → `ObjectiveSystem` → `LevelManager.AdvanceFloor()` → выгрузка геометрии + загрузка след. этажа + телепорт игрока на `PlayerSpawnPoint` (кровь/кулдауны переносятся)
+5. Последний этаж + выход = `WinRun()`; смерть (`PlayerDeathEvent`) → `RestartRun()` (новый игрок, этаж 1; мета-прогресс уже сохранён)
 
 ---
 
@@ -106,17 +112,27 @@ public class MyProvider : MonoProvider<MyComponent> { }
 
 ---
 
-## Порядок систем (WorldCreator.cs → CreateWorld())
+## Порядок систем (WorldCreator.cs → CreateWorld(), создаётся один раз)
 1. `HealthShaderSystem`
 2. `InputSystem`
 3. `MoveSystem`
 4. `CharacterAnimationSystem`
-5. `GuardTriggerSystem`
-6. `GuardBehaviorSystem`
-7. `GuardAnimationSystem`
-8. `GuardSetupSystem`
-9. `ConfigSetupSystem`
-10. `GuardPatrolSystem`
+5. `AbilitySystem`
+6. `InvisibilitySystem`
+7. `BloodPuddleSystem`
+8. `BloodSightSystem`
+9. `GuardVisionSystem`
+10. `GuardAlertSystem`
+11. `GuardBehaviorSystem`
+12. `GuardAnimationSystem`
+13. `GuardSetupSystem`
+14. `GuardPatrolSystem`
+15. `PlayerProgressSystem`
+16. `UpgradeSystem`
+17. `DamageSystem`
+18. `DrainSystem`
+19. `ObjectiveSystem`
+20. ~~`VillageReactionSystem`~~ — закомментирована (ждёт переделки)
 
 ---
 
@@ -127,22 +143,28 @@ public class MyProvider : MonoProvider<MyComponent> { }
 - `MoveSystem` применяет velocity к `Rigidbody2D`
 - `CharacterAnimationSystem` управляет аниматором (Idle/Move/Run)
 
-### Охранник — обнаружение
-- `GuardTriggerSystem` делает `Physics2D.OverlapCircle` вокруг охранника
-- При обнаружении ставит `GuardBehaviorComponent.targetTransform`
+### Способности (тратят кровь = единый ресурс)
+- `AbilitySystem` — ввод → проверка стоимости/кулдауна → списание `BloodComponent.current` → запуск (тег + таймер). Невидимость / Кровавая лужа / Кровавое зрение
+- `InvisibilitySystem` / `BloodPuddleSystem` / `BloodSightSystem` — активные состояния
 
-### Охранник — преследование
-- `GuardBehaviorSystem` считает путь через NavMesh к цели
-- Когда цель в `minMagnitude` — триггерит анимацию атаки
+### Кровь
+- `DamageSystem` — урон: щит (если `unlocked`) поглощает первым, остаток в кровь; кровь ≤ 0 → `Death`-анимация + `PlayerDeathEvent`
+- `DrainSystem` — по `Interact`/F мгновенно сливает ближайший `BloodSource` в радиусе (блок при полном пуле); пропускает источники со `state == Awake`
 
-### Охранник — патруль
-- `GuardPatrolSystem` циклично обходит `points` (List<Vector3>), на каждой точке ждёт `waitDuration`
-- Пишет цель в `GuardBehaviorComponent.patrolPoint` (движение делает GuardBehaviorSystem)
-- При обнаружении цели (`targetTransform != null`) патруль приостанавливается
+### Охранник — обнаружение / тревога
+- `GuardVisionSystem` — конус зрения + LoS-рейкаст → `GuardPerceptionComponent.awareness/state`; на `Alert` пишет цель
+- `GuardAlertSystem` — FSM Patrol→Suspicious→Chase→Search→Return, выбирает destination, гейтит патруль
+- `GuardBehaviorSystem` — чистый исполнитель: NavMesh к destination + атака в `minMagnitude` (поднимает `DamageEvent`)
+- `GuardPatrolSystem` — обход `points` с ожиданием `waitDuration`, продвигает маршрут только в `Patrol`
 
-### Конфиги
-- `ConfigSetupSystem` слушает `ConfigSetupEvent` → рассылает `GuardSetupConfigEvent`
-- `GuardSetupSystem` применяет `MaxHealth` из конфига ко всем охранникам
+### Прогрессия / забег
+- `PlayerProgressSystem` — применяет сохранённый мета-прогресс (бонусы крови/щита) к каждому новому игроку; сохраняет на `PlayerDeathEvent`
+- `UpgradeSystem` — вендор Бога Крови: клавиша `Upgrade` рядом → покупка следующего пункта `UpgradeConfig` за кровь
+- `GuardSetupSystem` — применяет `MaxHealth` из `GuardConfig` к каждому новому стражу (фильтр `Without<GuardConfiguredComponent>`)
+- `ObjectiveSystem` — проксимити игрок→`ExitComponent` → `LevelManager.AdvanceFloor`; `PlayerDeathEvent` → `RestartRun`
+
+### DI вместо событийной раздачи конфигов
+- Конфиги собраны в `MainConfig`, инжектятся через VContainer; системы получают их в конструкторе (`WorldCreator` раздаёт). Старые `ConfigSetupSystem`/`GuardSetupConfigEvent` удалены.
 
 ---
 
@@ -156,6 +178,11 @@ public class MyProvider : MonoProvider<MyComponent> { }
 
 ---
 
-## Что не реализовано (закомментировано)
-- `MoveNavMeshSystem` — не добавлена в `WorldCreator` (есть `MoveNavMeshComponent` + `MoveNavMeshProvider`)
-- Действия игрока: Sit, Jump, Hide, Magic, Death — есть в enum, нет в InputSystem
+## Состояние реализации
+Фазы 0–7 готовы в коде (детект, FSM тревоги, кровь, способности, Бог Крови+сохранения, поток этажей). Многие фичи требуют editor-части (провайдеры на префабах, input-экшены, SO-ассеты). Детальный статус — `Assets/Docs/Roadmap.md`.
+
+**Отключено/не реализовано:**
+- `VillageReactionSystem` (реактивность деревни) — закомментирована в `WorldCreator`, ждёт переделки/удаления
+- Авто-выдача способностей по этажам — нет (все способности доступны с старта)
+- `MoveNavMeshSystem` — не добавлена (но `MoveNavMeshComponent`/`Provider` используются стражей)
+- Экран победы / задержка рестарта под death-анимацию — Фаза 8 (HUD/полиш)

@@ -13,6 +13,7 @@ namespace ElderBlood.Ecs.Blood
         public Transform transform;
         public SpriteRenderer renderer;
         public float amount;
+        public SourceState state;
 
         // Runtime highlight state (Blood Sight).
         public bool highlighted;

@@ -26,7 +26,7 @@ namespace ElderBlood
 
         private void OnStartClicked()
         {
-            _levelManager.LoadFirstLevel();
+            _levelManager.StartRun();
             _view.HideStartButton();
         }
     }

@@ -20,6 +20,8 @@ namespace ElderBlood
         private GameObject _currentLevel;
         private GameObject _currentPlayer;
         private int _currentIndex = -1;
+        private bool _transitioning;
+        private Transform _pendingSpawnPoint;
 
         [Inject]
         public void Construct(MainConfig config)
@@ -28,25 +30,65 @@ namespace ElderBlood
             _playerPrefab = config.CharacterConfig.playerPrefab;
         }
 
-        public void LoadFirstLevel()
+        // Begins a fresh run: one player for the whole run, floors teleport it to their spawn point.
+        public void StartRun()
         {
-            LoadLevel(0);
+            StopAllCoroutines();
+            _transitioning = false;
+            _worldCreator.CreateWorld();
+            _currentIndex = -1;
+            Debug.Log("[Run] Start run");
+
+            SpawnPlayer();
+            LoadFloor(0);
         }
 
-        public void LoadNextLevel()
+        // Called by ObjectiveSystem when the player reaches the exit.
+        public void AdvanceFloor()
         {
-            var nextIndex = _currentIndex + 1;
-            if (nextIndex < _levelContainer.Count)
-                LoadLevel(nextIndex);
+            if (_transitioning)
+            {
+                return;
+            }
+
+            var next = _currentIndex + 1;
+            if (next < _levelContainer.Count)
+            {
+                LoadFloor(next);
+            }
+            else
+            {
+                WinRun();
+            }
         }
 
-        public void LoadLevel(int index)
+        // Called by ObjectiveSystem on player death. Meta is already persisted via PlayerProgressSystem.
+        public void RestartRun()
         {
+            Debug.Log("[Run] Restart run (floor 1)");
+            DestroyPlayer();
+            StartRun();
+        }
+
+        private void WinRun()
+        {
+            Debug.Log("[Run] WIN — reached the top");
+        }
+
+        private void LoadFloor(int index)
+        {
+            if (_transitioning)
+            {
+                return;
+            }
+
+            _transitioning = true;
             _currentIndex = index;
-            StartCoroutine(LoadLevelRoutine(_levelContainer.GetByIndex(index)));
+            Debug.Log($"[Run] Loading floor {index + 1}/{_levelContainer.Count}");
+            StartCoroutine(LoadFloorRoutine(_levelContainer.GetByIndex(index)));
         }
 
-        private IEnumerator LoadLevelRoutine(AssetReference levelPrefabRef)
+        private IEnumerator LoadFloorRoutine(AssetReference levelPrefabRef)
         {
             UnloadCurrentLevel();
 
@@ -56,18 +98,39 @@ namespace ElderBlood
             _currentLevel = handle.Result;
 
             var bootstrap = _currentLevel.GetComponentInChildren<LevelBootstrap>();
-            SpawnPlayer(bootstrap != null ? bootstrap.PlayerSpawnPoint : null);
-            _worldCreator.CreateWorld();
+            _pendingSpawnPoint = bootstrap != null ? bootstrap.PlayerSpawnPoint : null;
+            TryPlacePlayer();
+
+            _transitioning = false;
+        }
+
+        private void SpawnPlayer()
+        {
+            var handle = Addressables.InstantiateAsync(_playerPrefab, Vector3.zero, Quaternion.identity);
+            handle.Completed += h =>
+            {
+                _currentPlayer = h.Result;
+                PlayerSpawned?.Invoke(_currentPlayer.transform);
+                TryPlacePlayer();
+            };
+        }
+
+        // Places the persistent player at the current floor's spawn point. Safe to call from either
+        // the level-load routine or the player-spawn callback (whichever finishes last wins).
+        private void TryPlacePlayer()
+        {
+            if (_currentPlayer == null)
+            {
+                return;
+            }
+
+            _currentPlayer.transform.position = _pendingSpawnPoint != null
+                ? _pendingSpawnPoint.position
+                : Vector3.zero;
         }
 
         private void UnloadCurrentLevel()
         {
-            if (_currentPlayer != null)
-            {
-                Destroy(_currentPlayer);
-                _currentPlayer = null;
-            }
-
             if (_currentLevel != null)
             {
                 Addressables.ReleaseInstance(_currentLevel);
@@ -75,15 +138,13 @@ namespace ElderBlood
             }
         }
 
-        private void SpawnPlayer(Transform spawnPoint)
+        private void DestroyPlayer()
         {
-            var position = spawnPoint != null ? spawnPoint.position : Vector3.zero;
-            var handle = Addressables.InstantiateAsync(_playerPrefab, position, Quaternion.identity);
-            handle.Completed += h =>
+            if (_currentPlayer != null)
             {
-                _currentPlayer = h.Result;
-                PlayerSpawned?.Invoke(_currentPlayer.transform);
-            };
+                Destroy(_currentPlayer);
+                _currentPlayer = null;
+            }
         }
     }
 }

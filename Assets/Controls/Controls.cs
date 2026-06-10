@@ -181,6 +181,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Upgrade"",
+                    ""type"": ""Button"",
+                    ""id"": ""fb9d0c45-3548-472c-bae0-be202c4ec65a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -337,6 +346,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""BloodSight"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e354589-0cdd-4c85-892a-889217905ddf"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Upgrade"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -372,6 +392,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Main_Invisibility = m_Main.FindAction("Invisibility", throwIfNotFound: true);
         m_Main_BloodPuddle = m_Main.FindAction("BloodPuddle", throwIfNotFound: true);
         m_Main_BloodSight = m_Main.FindAction("BloodSight", throwIfNotFound: true);
+        m_Main_Upgrade = m_Main.FindAction("Upgrade", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -462,6 +483,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_Invisibility;
     private readonly InputAction m_Main_BloodPuddle;
     private readonly InputAction m_Main_BloodSight;
+    private readonly InputAction m_Main_Upgrade;
     /// <summary>
     /// Provides access to input actions defined in input action map "Main".
     /// </summary>
@@ -513,6 +535,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Main/BloodSight".
         /// </summary>
         public InputAction @BloodSight => m_Wrapper.m_Main_BloodSight;
+        /// <summary>
+        /// Provides access to the underlying input action "Main/Upgrade".
+        /// </summary>
+        public InputAction @Upgrade => m_Wrapper.m_Main_Upgrade;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -569,6 +595,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @BloodSight.started += instance.OnBloodSight;
             @BloodSight.performed += instance.OnBloodSight;
             @BloodSight.canceled += instance.OnBloodSight;
+            @Upgrade.started += instance.OnUpgrade;
+            @Upgrade.performed += instance.OnUpgrade;
+            @Upgrade.canceled += instance.OnUpgrade;
         }
 
         /// <summary>
@@ -610,6 +639,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @BloodSight.started -= instance.OnBloodSight;
             @BloodSight.performed -= instance.OnBloodSight;
             @BloodSight.canceled -= instance.OnBloodSight;
+            @Upgrade.started -= instance.OnUpgrade;
+            @Upgrade.performed -= instance.OnUpgrade;
+            @Upgrade.canceled -= instance.OnUpgrade;
         }
 
         /// <summary>
@@ -733,5 +765,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnBloodSight(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Upgrade" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnUpgrade(InputAction.CallbackContext context);
     }
 }

@@ -15,7 +15,7 @@ namespace ElderBlood.Ecs.Guard
 
         private Filter _filter;
         private Stash<HealthComponent> _stash;
-        private bool _applied;
+        private Stash<GuardConfiguredComponent> _configuredStash;
 
         public World World { get; set; }
 
@@ -26,23 +26,20 @@ namespace ElderBlood.Ecs.Guard
 
         public void OnAwake()
         {
-            _filter = World.Filter.With<HealthComponent>().With<GuardComponent>().Build();
+            _filter = World.Filter.With<HealthComponent>().With<GuardComponent>()
+                .Without<GuardConfiguredComponent>().Build();
             _stash = World.GetStash<HealthComponent>();
+            _configuredStash = World.GetStash<GuardConfiguredComponent>();
         }
 
         public void OnUpdate(float deltaTime)
         {
-            if (_applied)
-            {
-                return;
-            }
-
             foreach (var entity in _filter)
             {
                 ref var component = ref _stash.Get(entity);
                 component.maxHealthPoint = _config.MaxHealth;
                 component.healthPoint = _config.MaxHealth;
-                _applied = true;
+                _configuredStash.Set(entity);
             }
         }
 

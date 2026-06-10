@@ -3,6 +3,7 @@ using ElderBlood.Ecs.Movement;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Collections;
 using Unity.IL2CPP.CompilerServices;
+using UnityEngine;
 
 namespace ElderBlood.Ecs.Blood
 {
@@ -67,6 +68,11 @@ namespace ElderBlood.Ecs.Blood
                             var absorbed = shield.current < remaining ? shield.current : remaining;
                             shield.current -= absorbed;
                             remaining -= absorbed;
+
+                            if (shield.current <= 0f)
+                            {
+                                Debug.Log("[Damage] Shield broke");
+                            }
                         }
                     }
 
@@ -85,6 +91,8 @@ namespace ElderBlood.Ecs.Blood
                     _animationStash.Get(entity).type = CharacterAnimationType.Death;
                     _moveStash.Get(entity).isAction = true;
                     _deathEvent.NextFrame(new PlayerDeathEvent());
+
+                    Debug.Log("[Damage] Player died (blood depleted)");
                 }
             }
         }
