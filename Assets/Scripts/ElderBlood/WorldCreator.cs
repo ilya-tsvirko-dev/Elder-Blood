@@ -4,6 +4,7 @@ using ElderBlood.Ecs.Blood;
 using ElderBlood.Ecs.Character;
 using ElderBlood.Ecs.Guard;
 using ElderBlood.Ecs.Health;
+using ElderBlood.Ecs.Hud;
 using ElderBlood.Ecs.Level;
 using ElderBlood.Ecs.Movement;
 using ElderBlood.Ecs.Progression;
@@ -21,14 +22,16 @@ namespace ElderBlood
         private MainConfig _mainConfig;
         private SaveService _saveService;
         private LevelManager _levelManager;
+        private HudChannel _hudChannel;
         private bool _created;
 
         [Inject]
-        public void Construct(MainConfig mainConfig, SaveService saveService, LevelManager levelManager)
+        public void Construct(MainConfig mainConfig, SaveService saveService, LevelManager levelManager, HudChannel hudChannel)
         {
             _mainConfig = mainConfig;
             _saveService = saveService;
             _levelManager = levelManager;
+            _hudChannel = hudChannel;
         }
 
         public void CreateWorld()
@@ -56,6 +59,7 @@ namespace ElderBlood
             systemsGroup.AddSystem(new GuardAlertSystem());
             systemsGroup.AddSystem(new GuardBehaviorSystem());
             systemsGroup.AddSystem(new GuardAnimationSystem());
+            systemsGroup.AddSystem(new GuardAlertIndicatorSystem());
             systemsGroup.AddSystem(new GuardSetupSystem(_mainConfig));
             systemsGroup.AddSystem(new GuardPatrolSystem());
             systemsGroup.AddSystem(new PlayerProgressSystem(_saveService));
@@ -63,6 +67,7 @@ namespace ElderBlood
             systemsGroup.AddSystem(new DamageSystem());
             systemsGroup.AddSystem(new DrainSystem());
             systemsGroup.AddSystem(new ObjectiveSystem(_levelManager));
+            systemsGroup.AddSystem(new HudFeedSystem(_hudChannel, _mainConfig));
             // Village reactivity disabled for now (pending rework/removal).
             // systemsGroup.AddSystem(new VillageReactionSystem(_mainConfig, _saveService));
 

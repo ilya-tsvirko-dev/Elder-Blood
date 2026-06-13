@@ -16,6 +16,7 @@ namespace ElderBlood
 
         private LevelContainer _levelContainer;
         private AssetReference _playerPrefab;
+        private RunChannel _runChannel;
 
         private GameObject _currentLevel;
         private GameObject _currentPlayer;
@@ -24,10 +25,11 @@ namespace ElderBlood
         private Transform _pendingSpawnPoint;
 
         [Inject]
-        public void Construct(MainConfig config)
+        public void Construct(MainConfig config, RunChannel runChannel)
         {
             _levelContainer = config.LevelContainer;
             _playerPrefab = config.CharacterConfig.playerPrefab;
+            _runChannel = runChannel;
         }
 
         // Begins a fresh run: one player for the whole run, floors teleport it to their spawn point.
@@ -62,7 +64,7 @@ namespace ElderBlood
             }
         }
 
-        // Called by ObjectiveSystem on player death. Meta is already persisted via PlayerProgressSystem.
+        // Called by the run-end UI (restart button). Meta is already persisted via PlayerProgressSystem.
         public void RestartRun()
         {
             Debug.Log("[Run] Restart run (floor 1)");
@@ -70,9 +72,17 @@ namespace ElderBlood
             StartRun();
         }
 
+        // Called by ObjectiveSystem on player death — shows the run-end screen (no auto-restart).
+        public void EndRunDeath()
+        {
+            Debug.Log("[Run] Player died → run lost");
+            _runChannel.RaiseLost();
+        }
+
         private void WinRun()
         {
             Debug.Log("[Run] WIN — reached the top");
+            _runChannel.RaiseWon();
         }
 
         private void LoadFloor(int index)

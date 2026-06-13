@@ -190,6 +190,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""eeaf750f-984b-4fd6-ae3a-7fa517f0a835"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -357,6 +366,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Upgrade"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5c4481d5-65c1-47b0-882b-07927cc8d3f6"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -393,6 +413,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Main_BloodPuddle = m_Main.FindAction("BloodPuddle", throwIfNotFound: true);
         m_Main_BloodSight = m_Main.FindAction("BloodSight", throwIfNotFound: true);
         m_Main_Upgrade = m_Main.FindAction("Upgrade", throwIfNotFound: true);
+        m_Main_Pause = m_Main.FindAction("Pause", throwIfNotFound: true);
     }
 
     ~@Controls()
@@ -484,6 +505,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_BloodPuddle;
     private readonly InputAction m_Main_BloodSight;
     private readonly InputAction m_Main_Upgrade;
+    private readonly InputAction m_Main_Pause;
     /// <summary>
     /// Provides access to input actions defined in input action map "Main".
     /// </summary>
@@ -539,6 +561,10 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Main/Upgrade".
         /// </summary>
         public InputAction @Upgrade => m_Wrapper.m_Main_Upgrade;
+        /// <summary>
+        /// Provides access to the underlying input action "Main/Pause".
+        /// </summary>
+        public InputAction @Pause => m_Wrapper.m_Main_Pause;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -598,6 +624,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Upgrade.started += instance.OnUpgrade;
             @Upgrade.performed += instance.OnUpgrade;
             @Upgrade.canceled += instance.OnUpgrade;
+            @Pause.started += instance.OnPause;
+            @Pause.performed += instance.OnPause;
+            @Pause.canceled += instance.OnPause;
         }
 
         /// <summary>
@@ -642,6 +671,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Upgrade.started -= instance.OnUpgrade;
             @Upgrade.performed -= instance.OnUpgrade;
             @Upgrade.canceled -= instance.OnUpgrade;
+            @Pause.started -= instance.OnPause;
+            @Pause.performed -= instance.OnPause;
+            @Pause.canceled -= instance.OnPause;
         }
 
         /// <summary>
@@ -772,5 +804,12 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnUpgrade(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Pause" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPause(InputAction.CallbackContext context);
     }
 }

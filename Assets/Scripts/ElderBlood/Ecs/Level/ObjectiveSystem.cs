@@ -69,8 +69,8 @@ namespace ElderBlood.Ecs.Level
         {
             foreach (var _ in events)
             {
-                Debug.Log("[Run] Player died → restarting run");
-                _levelManager.RestartRun();
+                Debug.Log("[Run] Player died → ending run");
+                _levelManager.EndRunDeath();
                 return;
             }
         }
