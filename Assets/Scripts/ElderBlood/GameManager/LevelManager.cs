@@ -22,6 +22,7 @@ namespace ElderBlood
         private GameObject _currentPlayer;
         private int _currentIndex = -1;
         private bool _transitioning;
+        private bool _runOver;
         private Transform _pendingSpawnPoint;
 
         [Inject]
@@ -37,6 +38,7 @@ namespace ElderBlood
         {
             StopAllCoroutines();
             _transitioning = false;
+            _runOver = false;
             _worldCreator.CreateWorld();
             _currentIndex = -1;
             Debug.Log("[Run] Start run");
@@ -48,7 +50,9 @@ namespace ElderBlood
         // Called by ObjectiveSystem when the player reaches the exit.
         public void AdvanceFloor()
         {
-            if (_transitioning)
+            // ObjectiveSystem keeps polling proximity while the player stands on the exit, so both the
+            // transition and the finished-run states have to swallow repeat calls.
+            if (_transitioning || _runOver)
             {
                 return;
             }
@@ -75,12 +79,19 @@ namespace ElderBlood
         // Called by ObjectiveSystem on player death — shows the run-end screen (no auto-restart).
         public void EndRunDeath()
         {
+            if (_runOver)
+            {
+                return;
+            }
+
+            _runOver = true;
             Debug.Log("[Run] Player died → run lost");
             _runChannel.RaiseLost();
         }
 
         private void WinRun()
         {
+            _runOver = true;
             Debug.Log("[Run] WIN — reached the top");
             _runChannel.RaiseWon();
         }

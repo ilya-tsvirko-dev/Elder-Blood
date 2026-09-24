@@ -2,18 +2,43 @@ using System;
 
 namespace ElderBlood
 {
-    // Normalized cooldown fractions (1 = just cast / full cooldown, 0 = ready).
-    public readonly struct HudCooldowns
+    // One ability's HUD state. Readiness is quantised to the icon's pixel grid upstream,
+    // so the fill edge always lands on a whole pixel row.
+    public readonly struct HudAbilityState
     {
-        public readonly float invisibility;
-        public readonly float puddle;
-        public readonly float bloodSight;
+        public readonly float readiness;   // 0 = just cast, 1 = off cooldown
+        public readonly bool affordable;   // player has enough blood to pay the cost
 
-        public HudCooldowns(float invisibility, float puddle, float bloodSight)
+        public HudAbilityState(float readiness, bool affordable)
+        {
+            this.readiness = readiness;
+            this.affordable = affordable;
+        }
+
+        public bool Equals(in HudAbilityState other)
+        {
+            return readiness == other.readiness && affordable == other.affordable;
+        }
+    }
+
+    public readonly struct HudAbilities
+    {
+        public readonly HudAbilityState invisibility;
+        public readonly HudAbilityState puddle;
+        public readonly HudAbilityState bloodSight;
+
+        public HudAbilities(in HudAbilityState invisibility, in HudAbilityState puddle, in HudAbilityState bloodSight)
         {
             this.invisibility = invisibility;
             this.puddle = puddle;
             this.bloodSight = bloodSight;
+        }
+
+        public bool Equals(in HudAbilities other)
+        {
+            return invisibility.Equals(other.invisibility)
+                   && puddle.Equals(other.puddle)
+                   && bloodSight.Equals(other.bloodSight);
         }
     }
 
@@ -22,9 +47,9 @@ namespace ElderBlood
     public sealed class HudChannel
     {
         public event Action<float, float> BloodChanged;       // current, capacity
-        public event Action<HudCooldowns> CooldownsChanged;
+        public event Action<HudAbilities> AbilitiesChanged;
 
         public void RaiseBlood(float current, float capacity) => BloodChanged?.Invoke(current, capacity);
-        public void RaiseCooldowns(in HudCooldowns cooldowns) => CooldownsChanged?.Invoke(cooldowns);
+        public void RaiseAbilities(in HudAbilities abilities) => AbilitiesChanged?.Invoke(abilities);
     }
 }

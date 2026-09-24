@@ -479,7 +479,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     rigidbody: {fileID: 9111787585779885567}
-    speed: 15
+    speed: 40
     runSpeed: 40
     moveVector: {x: 0, y: 0}
     isRun: 0
@@ -529,9 +529,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   serializedData:
     transform: {fileID: 2535124292375936500}
-    minMagnitude: 0.75
+    collider: {fileID: 0}
+    attackRange: 0.2
     attackDamage: 25
     targetTransform: {fileID: 0}
+    targetCollider: {fileID: 0}
     patrolPoint: {x: 0, y: 0, z: 0}
 --- !u!114 &5833565324845665005
 MonoBehaviour:

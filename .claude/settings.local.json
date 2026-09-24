@@ -17,7 +17,23 @@
       "mcp__UnityMCP__manage_scene",
       "mcp__UnityMCP__manage_scriptable_object",
       "mcp__UnityMCP__manage_camera",
-      "mcp__UnityMCP__execute_code"
+      "mcp__UnityMCP__execute_code",
+      "Bash(python -c \"import PIL; print\\('pillow', PIL.__version__\\)\")",
+      "Bash(python palette_audit.py)",
+      "Bash(python palette_audit2.py)",
+      "Read(//c/Users/Phagos/AppData/Local/Unity/Editor/**)",
+      "mcp__UnityMCP__generate_image",
+      "Bash(python draw_icons.py)",
+      "Bash(python -)",
+      "Bash(python build_page.py)",
+      "Artifact",
+      "Bash(mkdir -p \"Assets/Sprites/UI/Abilities\")",
+      "Bash(cp __TRACKED_VAR__/Invisibility_A.png Assets/Sprites/UI/Abilities/Invisibility.png)",
+      "Bash(cp __TRACKED_VAR__/BloodPuddle_A.png Assets/Sprites/UI/Abilities/BloodPuddle.png)",
+      "Bash(cp __TRACKED_VAR__/BloodSight_A.png Assets/Sprites/UI/Abilities/BloodSight.png)",
+      "mcp__UnityMCP__refresh_unity",
+      "mcp__UnityMCP__manage_asset",
+      "mcp__UnityMCP__manage_components"
     ]
   }
 }

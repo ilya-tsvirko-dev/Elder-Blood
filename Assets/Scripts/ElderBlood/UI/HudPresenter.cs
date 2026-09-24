@@ -17,16 +17,16 @@ namespace ElderBlood
         public void Start()
         {
             _channel.BloodChanged += OnBloodChanged;
-            _channel.CooldownsChanged += OnCooldownsChanged;
+            _channel.AbilitiesChanged += OnAbilitiesChanged;
         }
 
         public void Dispose()
         {
             _channel.BloodChanged -= OnBloodChanged;
-            _channel.CooldownsChanged -= OnCooldownsChanged;
+            _channel.AbilitiesChanged -= OnAbilitiesChanged;
         }
 
         private void OnBloodChanged(float current, float capacity) => _view.SetBlood(current, capacity);
-        private void OnCooldownsChanged(HudCooldowns cooldowns) => _view.SetCooldowns(cooldowns);
+        private void OnAbilitiesChanged(HudAbilities abilities) => _view.SetAbilities(abilities);
     }
 }

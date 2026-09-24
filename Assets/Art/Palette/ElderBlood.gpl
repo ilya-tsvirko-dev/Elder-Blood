@@ -1,0 +1,54 @@
+GIMP Palette
+Name: Elder Blood
+Columns: 6
+#
+# --- Blood ---
+ 42   6  12	blood-0 void
+ 58   9  17	blood-1 shadow *
+129  20  38	blood-2 dark *
+161  27  49	blood-3 core *
+201  53  81	blood-4 highlight
+# --- Stone ---
+ 15  26  27	stone-0 *
+ 22  37  39	stone-1 *
+ 29  46  48	stone-2 *
+ 36  58  60	stone-3 *
+ 55  86  90	stone-4 highlight
+# --- Slate ---
+ 36  40  44	slate-0 *
+ 43  48  55	slate-1 *
+ 52  60  69	slate-2 *
+ 57  69  84	slate-3 *
+ 96 120 151	slate-4 *
+# --- Wood ---
+ 32  22  17	wood-0 *
+ 46  30  22	wood-1 *
+ 57  42  30	wood-2 *
+ 67  51  38	wood-3 *
+ 93  70  51	wood-4 *
+# --- Metal ---
+ 24  24  24	metal-0 *
+ 65  64  68	metal-1 *
+ 90  90  90	metal-2 *
+114 114 114	metal-3 *
+125 125 125	metal-4 *
+199 207 221	metal-5 sheen *
+# --- Moss ---
+ 31  42  28	moss-0 *
+ 35  46  32	moss-1 *
+ 40  51  37	moss-2 *
+# --- Arcane ---
+ 60  32 121	arcane-0 *
+ 95  58 173	arcane-1 *
+139 111 212	arcane-2 highlight
+# --- Ember ---
+125  53  29	ember-0 *
+147  56  28	ember-1 rust *
+211 147  59	ember-2 *
+244 204 152	ember-3 *
+# --- Neutral ---
+  0   0   0	neutral-0 *
+ 20  20  18	neutral-1 *
+ 25  28  30	neutral-2 *
+140 138 138	neutral-3 *
+255 255 255	neutral-4 *

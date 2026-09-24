@@ -27,6 +27,12 @@ namespace ElderBlood
 
         public void Show()
         {
+            // Own object may be disabled in the scene; activating only the child panel would do nothing.
+            if (!gameObject.activeSelf)
+            {
+                gameObject.SetActive(true);
+            }
+
             if (_panel != null)
             {
                 _panel.SetActive(true);

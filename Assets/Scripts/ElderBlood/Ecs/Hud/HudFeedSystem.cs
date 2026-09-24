@@ -14,6 +14,10 @@ namespace ElderBlood.Ecs.Hud
     [Il2CppSetOption(Option.DivideByZeroChecks, false)]
     public sealed class HudFeedSystem : ISystem
     {
+        // Ability icons are 32px tall. Quantising readiness to that grid keeps the fill edge
+        // on a whole pixel row and collapses per-frame churn into 32 events per cooldown.
+        private const float ReadinessSteps = 32f;
+
         public World World { get; set; }
 
         private Filter _filter;
@@ -25,9 +29,8 @@ namespace ElderBlood.Ecs.Hud
 
         private float _lastCurrent = float.NaN;
         private float _lastCapacity = float.NaN;
-        private float _lastInvisibility = float.NaN;
-        private float _lastPuddle = float.NaN;
-        private float _lastBloodSight = float.NaN;
+        private HudAbilities _lastAbilities;
+        private bool _hasAbilities;
 
         public HudFeedSystem(HudChannel channel, MainConfig config)
         {
@@ -55,16 +58,16 @@ namespace ElderBlood.Ecs.Hud
                 }
 
                 ref var abilities = ref _abilitiesStash.Get(entity);
-                var invisibility = Fraction(abilities.invisibilityCooldown, _config.invisibilityCooldown);
-                var puddle = Fraction(abilities.puddleCooldown, _config.puddleCooldown);
-                var bloodSight = Fraction(abilities.bloodSightCooldown, _config.bloodSightCooldown);
+                var state = new HudAbilities(
+                    State(abilities.invisibilityCooldown, _config.invisibilityCooldown, blood.current, _config.invisibilityCost),
+                    State(abilities.puddleCooldown, _config.puddleCooldown, blood.current, _config.puddleCost),
+                    State(abilities.bloodSightCooldown, _config.bloodSightCooldown, blood.current, _config.bloodSightCost));
 
-                if (invisibility != _lastInvisibility || puddle != _lastPuddle || bloodSight != _lastBloodSight)
+                if (!_hasAbilities || !state.Equals(_lastAbilities))
                 {
-                    _lastInvisibility = invisibility;
-                    _lastPuddle = puddle;
-                    _lastBloodSight = bloodSight;
-                    _channel.RaiseCooldowns(new HudCooldowns(invisibility, puddle, bloodSight));
+                    _hasAbilities = true;
+                    _lastAbilities = state;
+                    _channel.RaiseAbilities(state);
                 }
 
                 return; // single player
@@ -75,14 +78,22 @@ namespace ElderBlood.Ecs.Hud
         {
         }
 
-        private static float Fraction(float remaining, float total)
+        private static HudAbilityState State(float remaining, float total, float blood, float cost)
+        {
+            return new HudAbilityState(Readiness(remaining, total), blood >= cost);
+        }
+
+        private static float Readiness(float remaining, float total)
         {
             if (total <= 0f)
             {
-                return 0f;
+                return 1f;
             }
 
-            return Mathf.Clamp01(remaining / total);
+            var ready = 1f - Mathf.Clamp01(remaining / total);
+
+            // Floor rather than round: never show the ability as ready a step early.
+            return Mathf.Floor(ready * ReadinessSteps) / ReadinessSteps;
         }
     }
 }

@@ -12,11 +12,16 @@ namespace ElderBlood.Ecs.Guard
     public struct GuardBehaviorComponent : IComponent
     {
         public Transform transform;
-        public float minMagnitude;
+        public Collider2D collider;
+
+        // Gap between the two bodies, not a centre-to-centre distance: bodies differ in shape, so a
+        // radius measured from the centre reaches much further sideways than vertically.
+        public float attackRange;
         public float attackDamage;
 
         [Title("Runtime State")]
         [ReadOnly] public Transform targetTransform;
+        [ReadOnly] public Collider2D targetCollider;
         [ReadOnly] public Vector3 patrolPoint;
     }
 }

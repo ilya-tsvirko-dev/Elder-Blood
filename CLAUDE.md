@@ -125,14 +125,16 @@ public class MyProvider : MonoProvider<MyComponent> { }
 10. `GuardAlertSystem`
 11. `GuardBehaviorSystem`
 12. `GuardAnimationSystem`
-13. `GuardSetupSystem`
-14. `GuardPatrolSystem`
-15. `PlayerProgressSystem`
-16. `UpgradeSystem`
-17. `DamageSystem`
-18. `DrainSystem`
-19. `ObjectiveSystem`
-20. ~~`VillageReactionSystem`~~ — закомментирована (ждёт переделки)
+13. `GuardAlertIndicatorSystem`
+14. `GuardSetupSystem`
+15. `GuardPatrolSystem`
+16. `PlayerProgressSystem`
+17. `UpgradeSystem`
+18. `DamageSystem`
+19. `DrainSystem`
+20. `ObjectiveSystem`
+21. `HudFeedSystem`
+22. ~~`VillageReactionSystem`~~ — закомментирована (ждёт переделки)
 
 ---
 

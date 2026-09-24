@@ -56,22 +56,9 @@ namespace ElderBlood.Ecs.Guard
                 var pointToMove = behaviorComponent.targetTransform != null ?
                     behaviorComponent.targetTransform.position :  behaviorComponent.patrolPoint;
 
-                var canDoPath = NavMesh.CalculatePath(behaviorComponent.transform.position, pointToMove,
-                    NavMesh.AllAreas,
-                    navigationComponent.navMeshPath);
-                
-                if (!canDoPath)
-                    continue;
-                
-                for (int i = 0; i < navigationComponent.navMeshPath.corners.Length - 1; i++)
-                    Debug.DrawLine(navigationComponent.navMeshPath.corners[i], navigationComponent.navMeshPath.corners[i + 1], Color.red);
-                
-                var vector = navigationComponent.navMeshPath.corners[1] - navigationComponent.navMeshPath.corners[0];
-                var magnitude = (pointToMove - behaviorComponent.transform.position)
-                    .magnitude;
-                var normalizeVector = vector.normalized;
-
-                if (magnitude < behaviorComponent.minMagnitude && behaviorComponent.targetTransform != null)
+                // Attack is checked before pathfinding on purpose: at point-blank range the path collapses
+                // to a single corner, and gating the attack behind a path made the guard skip it entirely.
+                if (behaviorComponent.targetTransform != null && IsInAttackReach(ref behaviorComponent, pointToMove))
                 {
                     moveComponent.moveVector = Vector3.zero;
                     animationComponent.moveType = MoveAnimationType.Stop;
@@ -79,11 +66,44 @@ namespace ElderBlood.Ecs.Guard
                     _damageEvent.NextFrame(new DamageEvent { amount = behaviorComponent.attackDamage * deltaTime });
                     continue;
                 }
-                
+
+                var canDoPath = NavMesh.CalculatePath(behaviorComponent.transform.position, pointToMove,
+                    NavMesh.AllAreas,
+                    navigationComponent.navMeshPath);
+
+                if (!canDoPath || navigationComponent.navMeshPath.corners.Length < 2)
+                {
+                    moveComponent.moveVector = Vector3.zero;
+                    animationComponent.moveType = MoveAnimationType.Stop;
+                    continue;
+                }
+
+                for (int i = 0; i < navigationComponent.navMeshPath.corners.Length - 1; i++)
+                    Debug.DrawLine(navigationComponent.navMeshPath.corners[i], navigationComponent.navMeshPath.corners[i + 1], Color.red);
+
+                var vector = navigationComponent.navMeshPath.corners[1] - navigationComponent.navMeshPath.corners[0];
+                var normalizeVector = vector.normalized;
+
                 moveComponent.moveVector = normalizeVector;
                 animationComponent.moveVector = normalizeVector;
                 animationComponent.moveType = MoveAnimationType.Move;
             }
+        }
+
+        // Reach is the gap between the two bodies, measured surface to surface — the same in every
+        // direction. Falls back to a centre distance only if either collider is missing or disabled.
+        private static bool IsInAttackReach(ref GuardBehaviorComponent behavior, Vector3 targetPosition)
+        {
+            if (behavior.collider != null && behavior.targetCollider != null)
+            {
+                var gap = behavior.collider.Distance(behavior.targetCollider);
+                if (gap.isValid)
+                {
+                    return gap.distance <= behavior.attackRange;
+                }
+            }
+
+            return (targetPosition - behavior.transform.position).magnitude <= behavior.attackRange;
         }
 
         public void Dispose()

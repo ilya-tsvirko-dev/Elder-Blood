@@ -51,6 +51,7 @@ namespace ElderBlood.Ecs.Guard
                 var origin = (Vector2)behavior.transform.position + vision.eyeOffset;
 
                 Transform seen = null;
+                Collider2D seenCollider = null;
                 var visible = false;
 
                 var candidate = Physics2D.OverlapCircle(origin, vision.viewRadius, Layers.CharacterMask);
@@ -67,6 +68,7 @@ namespace ElderBlood.Ecs.Guard
                         {
                             visible = true;
                             seen = candidate.transform;
+                            seenCollider = candidate;
                             perception.lastSeenPosition = candidate.transform.position;
 
                             var proximity = 1f - Mathf.Clamp01(dist / vision.viewRadius);
@@ -95,7 +97,9 @@ namespace ElderBlood.Ecs.Guard
                     perception.state = PerceptionState.Unaware;
                 }
 
-                behavior.targetTransform = perception.state == PerceptionState.Alert ? seen : null;
+                var alert = perception.state == PerceptionState.Alert;
+                behavior.targetTransform = alert ? seen : null;
+                behavior.targetCollider = alert ? seenCollider : null;
 
                 DrawDebug(origin, vision, perception.state);
             }
