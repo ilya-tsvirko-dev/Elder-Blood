@@ -1,4 +1,6 @@
+using ElderBlood.Ecs.Audio;
 using ElderBlood.Ecs.Movement;
+using ElderBlood.Services;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Collections;
 using Unity.IL2CPP.CompilerServices;
@@ -21,6 +23,7 @@ namespace ElderBlood.Ecs.Blood
 
         private Event<DrainEvent> _drainEvent;
         private Event<SourceDrainedEvent> _drainedEvent;
+        private Event<SfxEvent> _sfxEvent;
 
         public void OnAwake()
         {
@@ -32,6 +35,7 @@ namespace ElderBlood.Ecs.Blood
 
             _drainEvent = World.GetEvent<DrainEvent>();
             _drainedEvent = World.GetEvent<SourceDrainedEvent>();
+            _sfxEvent = World.GetEvent<SfxEvent>();
             _drainEvent.Subscribe(OnDrain);
         }
 
@@ -52,7 +56,7 @@ namespace ElderBlood.Ecs.Blood
                     ref var blood = ref _bloodStash.Get(player);
                     if (blood.current >= blood.capacity)
                     {
-                        Debug.Log($"[Drain] Blocked: pool full ({blood.current:0.#}/{blood.capacity:0.#})");
+                        GameLogger.Blood($"[Drain] Blocked: pool full ({blood.current:0.#}/{blood.capacity:0.#})");
                         continue; // pool full → drain blocked
                     }
 
@@ -82,7 +86,7 @@ namespace ElderBlood.Ecs.Blood
 
                     if (!found)
                     {
-                        Debug.Log($"[Drain] No source within radius {blood.drainRadius:0.#}");
+                        GameLogger.Blood($"[Drain] No source within radius {blood.drainRadius:0.#}");
                         continue;
                     }
 
@@ -93,7 +97,9 @@ namespace ElderBlood.Ecs.Blood
 
                     _drainedEvent.NextFrame(new SourceDrainedEvent { amount = transfer });
 
-                    Debug.Log($"[Drain] +{transfer:0.#} blood → {blood.current:0.#}/{blood.capacity:0.#}. Source left {nearestSource.amount:0.#}");
+                    _sfxEvent.NextFrame(new SfxEvent { type = SfxType.Drain });
+
+                    GameLogger.Blood($"[Drain] +{transfer:0.#} blood → {blood.current:0.#}/{blood.capacity:0.#}. Source left {nearestSource.amount:0.#}");
                 }
             }
         }

@@ -1,6 +1,7 @@
 using ElderBlood.Configs;
 using ElderBlood.Ecs.Blood;
 using ElderBlood.Save;
+using ElderBlood.Services;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Collections;
 using Unity.IL2CPP.CompilerServices;
@@ -75,7 +76,7 @@ namespace ElderBlood.Ecs.Village
                 killedCount = saved.killedCount
             });
 
-            Debug.Log($"[Village] Loaded: notoriety {saved.notoriety:0.#}, tier {saved.tier}, drained {saved.drainedCount}");
+            GameLogger.Village($"[Village] Loaded: notoriety {saved.notoriety:0.#}, tier {saved.tier}, drained {saved.drainedCount}");
         }
 
         private void OnSourceDrained(FastList<SourceDrainedEvent> events)
@@ -91,13 +92,13 @@ namespace ElderBlood.Ecs.Village
                     ? Mathf.FloorToInt(village.notoriety / _config.notorietyPerTier)
                     : village.tier;
 
-                Debug.Log($"[Village] Notoriety {village.notoriety:0.#} (tier {village.tier}), drained {village.drainedCount}");
+                GameLogger.Village($"[Village] Notoriety {village.notoriety:0.#} (tier {village.tier}), drained {village.drainedCount}");
 
                 if (newTier > village.tier)
                 {
                     village.tier = newTier;
                     WakeSources();
-                    Debug.Log($"[Village] Tier up → {village.tier}");
+                    GameLogger.Village($"[Village] Tier up → {village.tier}");
                 }
 
                 Persist(village);
@@ -118,7 +119,7 @@ namespace ElderBlood.Ecs.Village
                 }
             }
 
-            Debug.Log($"[Village] Woke {woken} source(s) — no longer drainable");
+            GameLogger.Village($"[Village] Woke {woken} source(s) — no longer drainable");
         }
 
         private void Persist(in VillageStateComponent village)

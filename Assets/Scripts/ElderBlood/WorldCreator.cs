@@ -1,5 +1,6 @@
 using ElderBlood.Configs;
 using ElderBlood.Ecs.Abilities;
+using ElderBlood.Ecs.Audio;
 using ElderBlood.Ecs.Blood;
 using ElderBlood.Ecs.Character;
 using ElderBlood.Ecs.Guard;
@@ -10,6 +11,7 @@ using ElderBlood.Ecs.Movement;
 using ElderBlood.Ecs.Progression;
 using ElderBlood.Ecs.Village;
 using ElderBlood.Save;
+using ElderBlood.Services;
 using Scellecs.Morpeh;
 using UnityEngine;
 using VContainer;
@@ -23,15 +25,17 @@ namespace ElderBlood
         private SaveService _saveService;
         private LevelManager _levelManager;
         private HudChannel _hudChannel;
+        private AudioService _audioService;
         private bool _created;
 
         [Inject]
-        public void Construct(MainConfig mainConfig, SaveService saveService, LevelManager levelManager, HudChannel hudChannel)
+        public void Construct(MainConfig mainConfig, SaveService saveService, LevelManager levelManager, HudChannel hudChannel, AudioService audioService)
         {
             _mainConfig = mainConfig;
             _saveService = saveService;
             _levelManager = levelManager;
             _hudChannel = hudChannel;
+            _audioService = audioService;
         }
 
         public void CreateWorld()
@@ -68,6 +72,7 @@ namespace ElderBlood
             systemsGroup.AddSystem(new DrainSystem());
             systemsGroup.AddSystem(new ObjectiveSystem(_levelManager));
             systemsGroup.AddSystem(new HudFeedSystem(_hudChannel, _mainConfig));
+            systemsGroup.AddSystem(new AudioSystem(_audioService));
             // Village reactivity disabled for now (pending rework/removal).
             // systemsGroup.AddSystem(new VillageReactionSystem(_mainConfig, _saveService));
 

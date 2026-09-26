@@ -1,5 +1,7 @@
+using ElderBlood.Ecs.Audio;
 using ElderBlood.Ecs.Character;
 using ElderBlood.Ecs.Movement;
+using ElderBlood.Services;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Collections;
 using Unity.IL2CPP.CompilerServices;
@@ -22,6 +24,7 @@ namespace ElderBlood.Ecs.Blood
 
         private Event<DamageEvent> _damageEvent;
         private Event<PlayerDeathEvent> _deathEvent;
+        private Event<SfxEvent> _sfxEvent;
 
         public void OnAwake()
         {
@@ -34,6 +37,7 @@ namespace ElderBlood.Ecs.Blood
 
             _damageEvent = World.GetEvent<DamageEvent>();
             _deathEvent = World.GetEvent<PlayerDeathEvent>();
+            _sfxEvent = World.GetEvent<SfxEvent>();
             _damageEvent.Subscribe(ApplyDamage);
         }
 
@@ -59,6 +63,9 @@ namespace ElderBlood.Ecs.Blood
 
                     var remaining = damage.amount;
 
+                    // Guard damage is continuous DPS; AudioService keeps the same clip from retriggering.
+                    _sfxEvent.NextFrame(new SfxEvent { type = SfxType.Damage });
+
                     // Shield absorbs first (if present and unlocked).
                     if (_shieldStash.Has(entity))
                     {
@@ -71,7 +78,7 @@ namespace ElderBlood.Ecs.Blood
 
                             if (shield.current <= 0f)
                             {
-                                Debug.Log("[Damage] Shield broke");
+                                GameLogger.Damage("[Damage] Shield broke");
                             }
                         }
                     }
@@ -92,7 +99,7 @@ namespace ElderBlood.Ecs.Blood
                     _moveStash.Get(entity).isAction = true;
                     _deathEvent.NextFrame(new PlayerDeathEvent());
 
-                    Debug.Log("[Damage] Player died (blood depleted)");
+                    GameLogger.Damage("[Damage] Player died (blood depleted)");
                 }
             }
         }

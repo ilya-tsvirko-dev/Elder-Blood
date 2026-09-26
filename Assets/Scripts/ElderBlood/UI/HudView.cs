@@ -13,6 +13,17 @@ namespace ElderBlood
         [SerializeField] private Image _bloodFill;
         [SerializeField] private TMP_Text _bloodText;
 
+        [Header("Shield")]
+        [SerializeField] private Image _shieldFill;
+        [SerializeField] private TMP_Text _shieldText;
+
+        [Header("Blood Sight vignette")]
+        [Tooltip("Full-screen overlay shown while Blood Sight is active; it fades out as the ability runs down.")]
+        [SerializeField] private Image _bloodSightOverlay;
+        [Tooltip("Alpha of the overlay at full strength, right after the cast.")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _bloodSightPeakAlpha = 0.15f;
+
         [Header("Invisibility icon")]
         [SerializeField] private Image _invisibilityDrained;
         [SerializeField] private Image _invisibilityFill;
@@ -42,14 +53,60 @@ namespace ElderBlood
 
         public void SetBlood(float current, float capacity)
         {
-            if (_bloodFill != null)
+            SetBar(_bloodFill, _bloodText, current, capacity);
+        }
+
+        // The shield bar hides entirely until the upgrade is bought, rather than sitting at zero.
+        public void SetShield(float current, float max, bool unlocked)
+        {
+            if (_shieldFill != null)
             {
-                _bloodFill.fillAmount = capacity > 0f ? current / capacity : 0f;
+                _shieldFill.gameObject.SetActive(unlocked);
             }
 
-            if (_bloodText != null)
+            if (_shieldText != null)
             {
-                _bloodText.text = $"{Mathf.CeilToInt(current)}/{Mathf.CeilToInt(capacity)}";
+                _shieldText.gameObject.SetActive(unlocked);
+            }
+
+            if (unlocked)
+            {
+                SetBar(_shieldFill, _shieldText, current, max);
+            }
+        }
+
+        private static void SetBar(Image fill, TMP_Text text, float current, float max)
+        {
+            if (fill != null)
+            {
+                fill.fillAmount = max > 0f ? current / max : 0f;
+            }
+
+            if (text != null)
+            {
+                text.text = $"{Mathf.CeilToInt(current)}/{Mathf.CeilToInt(max)}";
+            }
+        }
+
+        // `remaining` is the 0..1 share of the duration still left, already quantised by HudFeedSystem —
+        // writing a Graphic's colour dirties the whole canvas, so this must not run every frame.
+        public void SetBloodSight(bool active, float remaining)
+        {
+            if (_bloodSightOverlay == null)
+            {
+                return;
+            }
+
+            if (_bloodSightOverlay.gameObject.activeSelf != active)
+            {
+                _bloodSightOverlay.gameObject.SetActive(active);
+            }
+
+            if (active)
+            {
+                var c = _bloodSightOverlay.color;
+                c.a = remaining * _bloodSightPeakAlpha;
+                _bloodSightOverlay.color = c;
             }
         }
 

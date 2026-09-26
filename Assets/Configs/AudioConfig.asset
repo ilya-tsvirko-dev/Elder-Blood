@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69f5844b94913234caece35b17e88605, type: 3}
+  m_Name: AudioConfig
+  m_EditorClassIdentifier: Assembly-CSharp::ElderBlood.Services.AudioConfig
+  damageClip: {fileID: 8300000, guid: d234fc02167efd24b8c5475abde1bf19, type: 3}
+  alertClip: {fileID: 8300000, guid: b00401e1310d11d4baed75e370188c1b, type: 3}
+  abilityCastClip: {fileID: 8300000, guid: eda3488ba5e4231439f12e8f067e86de, type: 3}
+  drainClip: {fileID: 8300000, guid: 6c1de8763e1b33342b4034ade81ac5ee, type: 3}
+  mixerGroup: {fileID: 24300002, guid: 725ac5ee3e0aa22469f26110de4a0ef4, type: 2}

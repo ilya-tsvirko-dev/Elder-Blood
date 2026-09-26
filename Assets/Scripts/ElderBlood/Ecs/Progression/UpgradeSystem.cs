@@ -2,6 +2,7 @@ using ElderBlood.Configs;
 using ElderBlood.Ecs.Blood;
 using ElderBlood.Ecs.Movement;
 using ElderBlood.Save;
+using ElderBlood.Services;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Collections;
 using Unity.IL2CPP.CompilerServices;
@@ -76,7 +77,7 @@ namespace ElderBlood.Ecs.Progression
             var index = _saveService.Progress.purchasedCount;
             if (_config.upgrades == null || index >= _config.upgrades.Count)
             {
-                Debug.Log("[Upgrade] Catalog exhausted: nothing left to buy");
+                GameLogger.Upgrade("[Upgrade] Catalog exhausted: nothing left to buy");
                 return;
             }
 
@@ -84,7 +85,7 @@ namespace ElderBlood.Ecs.Progression
             Vector2 playerPos = move.rigidbody.position;
             if (!IsNearVendor(playerPos))
             {
-                Debug.Log("[Upgrade] Not near a God-of-Blood vendor");
+                GameLogger.Upgrade("[Upgrade] Not near a God-of-Blood vendor");
                 return;
             }
 
@@ -93,7 +94,7 @@ namespace ElderBlood.Ecs.Progression
             ref var blood = ref _bloodStash.Get(player);
             if (blood.current < entry.cost)
             {
-                Debug.Log($"[Upgrade] Denied '{entry.id}' ({entry.type}): need {entry.cost} blood, have {blood.current:0.#}");
+                GameLogger.Upgrade($"[Upgrade] Denied '{entry.id}' ({entry.type}): need {entry.cost} blood, have {blood.current:0.#}");
                 return; // currency is the live blood pool
             }
 
@@ -127,7 +128,7 @@ namespace ElderBlood.Ecs.Progression
             progress.purchasedCount++;
             _saveService.Save();
 
-            Debug.Log($"[Upgrade] Bought '{entry.id}' ({entry.type} +{entry.amount}): -{entry.cost} blood → {blood.current:0.#} left. Next index {progress.purchasedCount}/{_config.upgrades.Count}");
+            GameLogger.Upgrade($"[Upgrade] Bought '{entry.id}' ({entry.type} +{entry.amount}): -{entry.cost} blood → {blood.current:0.#} left. Next index {progress.purchasedCount}/{_config.upgrades.Count}");
         }
 
         private bool IsNearVendor(Vector2 playerPos)

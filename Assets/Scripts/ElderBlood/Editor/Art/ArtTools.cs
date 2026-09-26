@@ -3,6 +3,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using UnityEditor;
+using ElderBlood.Services;
 using UnityEngine;
 
 namespace ElderBlood.Editor.Art {
@@ -37,7 +38,7 @@ namespace ElderBlood.Editor.Art {
                     if (SpriteImportPostprocessor.Apply(importer, domain)) {
                         importer.SaveAndReimport();
                         fixedCount++;
-                        Debug.Log($"[Art] Fixed import settings ({domain.Name}, PPU {domain.PixelsPerUnit}): {path}");
+                        GameLogger.Art($"[Art] Fixed import settings ({domain.Name}, PPU {domain.PixelsPerUnit}): {path}");
                     }
                 }
             }
@@ -47,14 +48,14 @@ namespace ElderBlood.Editor.Art {
                 AssetDatabase.Refresh();
             }
 
-            Debug.Log($"[Art] Reimport complete. {fixedCount} of {guids.Length} textures corrected.");
+            GameLogger.Art($"[Art] Reimport complete. {fixedCount} of {guids.Length} textures corrected.");
         }
 
         [MenuItem("Tools/Elder Blood/Art/Validate Art")]
         public static void ValidateArt() {
             var palette = LoadPalette();
             if (palette == null) {
-                Debug.LogError($"[Art] Palette not found at {SpriteImportRules.PaletteAssetPath}");
+                GameLogger.Error($"[Art] Palette not found at {SpriteImportRules.PaletteAssetPath}");
                 return;
             }
 
@@ -122,7 +123,7 @@ namespace ElderBlood.Editor.Art {
             }
 
             report.AppendLine($"{dirtyFiles} file(s) need attention.");
-            Debug.Log(report.ToString());
+            GameLogger.Art(report.ToString());
         }
 
         private static HashSet<int> LoadPalette() {

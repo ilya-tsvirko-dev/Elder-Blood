@@ -4,47 +4,40 @@ using UnityEngine.UI;
 
 namespace ElderBlood
 {
-    public class PauseView : MonoBehaviour
+    public class PauseView : PanelView
     {
-        [SerializeField] private GameObject _panel;
         [SerializeField] private Button _resumeButton;
         [SerializeField] private Button _restartButton;
+        [SerializeField] private Button _settingsButton;
         [SerializeField] private Button _quitButton;
 
         public event Action ResumeClicked;
         public event Action RestartClicked;
+        public event Action SettingsClicked;
         public event Action QuitClicked;
 
-        public bool IsVisible => _panel != null && _panel.activeSelf;
+        // Raised on Hide() so panels opened from here (settings) can close with it.
+        public event Action Closed;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             _resumeButton.onClick.AddListener(() => ResumeClicked?.Invoke());
             _restartButton.onClick.AddListener(() => RestartClicked?.Invoke());
             _quitButton.onClick.AddListener(() => QuitClicked?.Invoke());
-            Hide();
-        }
 
-        public void Show()
-        {
-            // Own object may be disabled in the scene; activating only the child panel would do nothing.
-            if (!gameObject.activeSelf)
+            // Optional: the settings screen is a separate panel and may not exist in every scene.
+            if (_settingsButton != null)
             {
-                gameObject.SetActive(true);
-            }
-
-            if (_panel != null)
-            {
-                _panel.SetActive(true);
+                _settingsButton.onClick.AddListener(() => SettingsClicked?.Invoke());
             }
         }
 
-        public void Hide()
+        public override void Hide()
         {
-            if (_panel != null)
-            {
-                _panel.SetActive(false);
-            }
+            base.Hide();
+            Closed?.Invoke();
         }
     }
 }

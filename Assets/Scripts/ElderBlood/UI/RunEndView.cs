@@ -5,9 +5,8 @@ using UnityEngine.UI;
 
 namespace ElderBlood
 {
-    public class RunEndView : MonoBehaviour
+    public class RunEndView : PanelView
     {
-        [SerializeField] private GameObject _panel;
         [SerializeField] private TMP_Text _title;
         [SerializeField] private Button _restartButton;
         [SerializeField] private Button _quitButton;
@@ -15,38 +14,22 @@ namespace ElderBlood
         public event Action RestartClicked;
         public event Action QuitClicked;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             _restartButton.onClick.AddListener(() => RestartClicked?.Invoke());
             _quitButton.onClick.AddListener(() => QuitClicked?.Invoke());
-            Hide();
         }
 
         public void Show(string title)
         {
-            // Own object may be disabled in the scene; activating only the child panel would do nothing.
-            if (!gameObject.activeSelf)
-            {
-                gameObject.SetActive(true);
-            }
-
             if (_title != null)
             {
                 _title.text = title;
             }
 
-            if (_panel != null)
-            {
-                _panel.SetActive(true);
-            }
-        }
-
-        public void Hide()
-        {
-            if (_panel != null)
-            {
-                _panel.SetActive(false);
-            }
+            Show();
         }
     }
 }

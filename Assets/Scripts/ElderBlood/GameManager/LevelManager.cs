@@ -3,6 +3,7 @@ using System.Collections;
 using ElderBlood.Configs;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using ElderBlood.Services;
 using VContainer;
 
 namespace ElderBlood
@@ -41,7 +42,7 @@ namespace ElderBlood
             _runOver = false;
             _worldCreator.CreateWorld();
             _currentIndex = -1;
-            Debug.Log("[Run] Start run");
+            GameLogger.Run("[Run] Start run");
 
             SpawnPlayer();
             LoadFloor(0);
@@ -71,7 +72,7 @@ namespace ElderBlood
         // Called by the run-end UI (restart button). Meta is already persisted via PlayerProgressSystem.
         public void RestartRun()
         {
-            Debug.Log("[Run] Restart run (floor 1)");
+            GameLogger.Run("[Run] Restart run (floor 1)");
             DestroyPlayer();
             StartRun();
         }
@@ -85,14 +86,14 @@ namespace ElderBlood
             }
 
             _runOver = true;
-            Debug.Log("[Run] Player died → run lost");
+            GameLogger.Run("[Run] Player died → run lost");
             _runChannel.RaiseLost();
         }
 
         private void WinRun()
         {
             _runOver = true;
-            Debug.Log("[Run] WIN — reached the top");
+            GameLogger.Run("[Run] WIN — reached the top");
             _runChannel.RaiseWon();
         }
 
@@ -105,7 +106,7 @@ namespace ElderBlood
 
             _transitioning = true;
             _currentIndex = index;
-            Debug.Log($"[Run] Loading floor {index + 1}/{_levelContainer.Count}");
+            GameLogger.Run($"[Run] Loading floor {index + 1}/{_levelContainer.Count}");
             StartCoroutine(LoadFloorRoutine(_levelContainer.GetByIndex(index)));
         }
 

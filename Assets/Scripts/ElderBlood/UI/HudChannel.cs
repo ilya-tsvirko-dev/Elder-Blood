@@ -48,8 +48,12 @@ namespace ElderBlood
     {
         public event Action<float, float> BloodChanged;       // current, capacity
         public event Action<HudAbilities> AbilitiesChanged;
+        public event Action<float, float, bool> ShieldChanged; // current, max, unlocked
+        public event Action<bool, float> BloodSightChanged;    // active, 0..1 of duration left
 
         public void RaiseBlood(float current, float capacity) => BloodChanged?.Invoke(current, capacity);
         public void RaiseAbilities(in HudAbilities abilities) => AbilitiesChanged?.Invoke(abilities);
+        public void RaiseShield(float current, float max, bool unlocked) => ShieldChanged?.Invoke(current, max, unlocked);
+        public void RaiseBloodSight(bool active, float remaining) => BloodSightChanged?.Invoke(active, remaining);
     }
 }

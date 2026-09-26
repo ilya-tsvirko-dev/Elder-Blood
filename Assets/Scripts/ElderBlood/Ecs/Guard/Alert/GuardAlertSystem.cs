@@ -1,3 +1,4 @@
+using ElderBlood.Ecs.Audio;
 using Scellecs.Morpeh;
 using Unity.IL2CPP.CompilerServices;
 using UnityEngine;
@@ -17,6 +18,7 @@ namespace ElderBlood.Ecs.Guard
         private Stash<GuardBehaviorComponent> _behaviorStash;
         private Stash<GuardVisionComponent> _visionStash;
         private Stash<GuardPatrolComponent> _patrolStash;
+        private Event<SfxEvent> _sfxEvent;
 
         public void OnAwake()
         {
@@ -27,6 +29,7 @@ namespace ElderBlood.Ecs.Guard
             _behaviorStash = World.GetStash<GuardBehaviorComponent>();
             _visionStash = World.GetStash<GuardVisionComponent>();
             _patrolStash = World.GetStash<GuardPatrolComponent>();
+            _sfxEvent = World.GetEvent<SfxEvent>();
         }
 
         public void OnUpdate(float deltaTime)
@@ -40,6 +43,7 @@ namespace ElderBlood.Ecs.Guard
                 ref var patrol = ref _patrolStash.Get(entity);
 
                 var guardPos = behavior.transform.position;
+                var wasChasing = alert.state == GuardAlertState.Chase;
 
                 switch (alert.state)
                 {
@@ -80,6 +84,13 @@ namespace ElderBlood.Ecs.Guard
                         else if (Vector3.Distance(guardPos, patrol.currentPoint) <= alert.returnReachDistance)
                             alert.state = GuardAlertState.Patrol;
                         break;
+                }
+
+                // One edge check instead of a raise per transition: four branches lead into Chase, and
+                // tagging them individually already left Search→Chase and Return→Chase silent.
+                if (!wasChasing && alert.state == GuardAlertState.Chase)
+                {
+                    _sfxEvent.NextFrame(new SfxEvent { type = SfxType.Alert });
                 }
 
                 // Destination per state. targetTransform (chase) is owned by GuardVisionSystem;

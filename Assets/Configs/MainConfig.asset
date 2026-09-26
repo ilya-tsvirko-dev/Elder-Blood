@@ -18,3 +18,5 @@ MonoBehaviour:
   CharacterConfig: {fileID: 11400000, guid: 4ac884a63ba59954e8e31e459b7b6b5a, type: 2}
   UpgradeConfig: {fileID: 11400000, guid: 3a616ea0751cdbb4da8c53b69ea8b61f, type: 2}
   VillageConfig: {fileID: 11400000, guid: baac8533b9512ac46874854d4857a7cf, type: 2}
+  LogConfig: {fileID: 11400000, guid: 27e682a12dc294f49839c356cfac8985, type: 2}
+  AudioConfig: {fileID: 11400000, guid: 32a688fee567ffb4282f439028ab0022, type: 2}

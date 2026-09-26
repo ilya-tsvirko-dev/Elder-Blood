@@ -16,6 +16,7 @@ namespace ElderBlood.Save
 
         public PlayerProgressData Progress => _data.player;
         public VillageStateData Village => _data.village;
+        public SettingsData Settings => _data.settings;
 
         public SaveService()
         {
@@ -37,6 +38,7 @@ namespace ElderBlood.Save
 
             _data.player ??= new PlayerProgressData();
             _data.village ??= new VillageStateData();
+            _data.settings ??= new SettingsData();
         }
 
         public void Save()
@@ -50,6 +52,7 @@ namespace ElderBlood.Save
         {
             public PlayerProgressData player = new();
             public VillageStateData village = new();
+            public SettingsData settings = new();
         }
     }
 }

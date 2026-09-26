@@ -2,7 +2,6 @@
   "dependencies": {
     "com.codewriter.morpeh.events": "https://github.com/codewriter-packages/Morpeh.Events.git",
     "com.codewriter.triinspector": "https://github.com/codewriter-packages/Tri-Inspector.git",
-    "com.coplaydev.unity-mcp": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main",
     "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.h8man.2d.navmeshplus": "https://github.com/h8man/NavMeshPlus.git",
     "com.scellecs.morpeh": "https://github.com/scellecs/morpeh.git?path=Scellecs.Morpeh",
@@ -13,6 +12,7 @@
     "com.unity.ide.rider": "3.0.39",
     "com.unity.ide.visualstudio": "2.0.26",
     "com.unity.inputsystem": "1.18.0",
+    "com.unity.pipeline": "0.8.0-exp.1",
     "com.unity.recorder": "5.1.4",
     "com.unity.render-pipelines.universal": "17.3.0",
     "com.unity.test-framework": "1.6.0",

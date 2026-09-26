@@ -34,6 +34,8 @@ namespace ElderBlood.Editor.Art {
             new SpriteDomain("Assets/Art/Palette/", 1, "Palette"),
             new SpriteDomain("Assets/Sprites/Enviroment/", 16, "Environment"),
             new SpriteDomain("Assets/Sprites/UI/Abilities/", 100, "Ability Icons", forceSingleSprite: true),
+            new SpriteDomain("Assets/Sprites/UI/Hud/", 100, "HUD Plates", forceSingleSprite: true),
+            new SpriteDomain("Assets/Sprites/UI/Menu/", 100, "Menu Plates", forceSingleSprite: true),
             new SpriteDomain("Assets/Sprites/UI/", 100, "UI"),
             new SpriteDomain("Assets/Sprites/", 32, "World"),
         };

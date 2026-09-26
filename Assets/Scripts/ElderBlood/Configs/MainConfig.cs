@@ -12,5 +12,7 @@ namespace ElderBlood.Configs
         public CharacterConfig CharacterConfig;
         public UpgradeConfig UpgradeConfig;
         public VillageConfig VillageConfig;
+        public LogConfig LogConfig;
+        public AudioConfig AudioConfig;
     }
 }

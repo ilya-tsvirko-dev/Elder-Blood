@@ -1,5 +1,6 @@
 using ElderBlood.Ecs.Blood;
 using ElderBlood.Ecs.Movement;
+using ElderBlood.Services;
 using Scellecs.Morpeh;
 using Scellecs.Morpeh.Collections;
 using Unity.IL2CPP.CompilerServices;
@@ -53,7 +54,7 @@ namespace ElderBlood.Ecs.Level
                     var sqr = ((Vector2)exitData.transform.position - playerPos).sqrMagnitude;
                     if (sqr <= exitData.reachRadius * exitData.reachRadius)
                     {
-                        Debug.Log("[Run] Exit reached → advancing floor");
+                        GameLogger.Run("[Run] Exit reached → advancing floor");
                         _levelManager.AdvanceFloor();
                         return;
                     }
@@ -69,7 +70,7 @@ namespace ElderBlood.Ecs.Level
         {
             foreach (var _ in events)
             {
-                Debug.Log("[Run] Player died → ending run");
+                GameLogger.Run("[Run] Player died → ending run");
                 _levelManager.EndRunDeath();
                 return;
             }
